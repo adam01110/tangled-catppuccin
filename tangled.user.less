@@ -145,33 +145,36 @@
       border-color: @accent;
     }
 
+    // start: syntax highlighting
     .chroma {
       color: @text;
     }
-    :is(.c1, .cm) {
+    :is(.c, .c1, .cm) {
       color: fade(@mauve, 55%);
       font-style: italic;
     }
-    :is(.k, .kr) {
+    :is(.k, .kc, .kd, .kn, kp, .kr) {
       color: @mauve;
     }
-    .s1 {
+    :is(.s, .s1, .s2) {
       color: @green;
     }
-    .nx {
+    :is(.nf, .nx) {
       color: @blue;
     }
     .o {
       color: @sapphire;
     }
-    .err {
+    :is(.n, .err) {
       color: @peach;
     }
     .kt {
       color: @red;
     }
+    // line selections
     .hl {
       background-color: fade(@surface0, 40%);
     }
+    // end: syntax highlighting
   }
 }
