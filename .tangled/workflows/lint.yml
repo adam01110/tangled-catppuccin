@@ -1,0 +1,13 @@
+when:
+  - event: ["push"]
+    branch: main
+
+engine: nixery
+
+dependencies:
+  nixpkgs:
+    - prettier
+
+steps:
+  - name: lint userstyle
+    command: prettier --check tangled.user.less
