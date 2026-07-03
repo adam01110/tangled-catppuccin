@@ -148,6 +148,7 @@
     // start: syntax highlighting
     .chroma {
       color: @text;
+      background-color: @crust;
     }
     :is(.c, .c1, .cm) {
       color: fade(@mauve, 55%);
@@ -162,7 +163,7 @@
     :is(.nv, .nf, .nx) {
       color: @blue;
     }
-    .o {
+    :is(.o, .p) {
       color: @sapphire;
     }
     :is(.cl, .n, .err) {
