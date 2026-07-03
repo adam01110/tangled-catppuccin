@@ -16,114 +16,114 @@
 @import "https://userstyles.catppuccin.com/lib/lib.less";
 
 @-moz-document domain("tangled.org") {
-    :root {
-        @media (prefers-color-scheme: light) {
-            #catppuccin(@lightFlavor);
-        }
-        @media (prefers-color-scheme: dark) {
-            #catppuccin(@darkFlavor);
-        }
+  :root {
+    @media (prefers-color-scheme: light) {
+      #catppuccin(@lightFlavor);
+    }
+    @media (prefers-color-scheme: dark) {
+      #catppuccin(@darkFlavor);
+    }
+  }
+
+  #catppuccin(@flavor) {
+    #lib.palette();
+    #lib.defaults();
+
+    .dark\:bg-gray-900 {
+      background-color: @base;
     }
 
-    #catppuccin(@flavor) {
-        #lib.palette();
-        #lib.defaults();
-
-        .dark\:bg-gray-900 {
-            background-color: @base;
-        }
-
-        .dark\:bg-gray-800 {
-            background-color: @mantle;
-        }
-
-        .dark\:text-red-400 {
-            color: @red;
-        }
-
-        .dark\:bg-gray-700 {
-            background-color: @crust;
-        }
-
-        :is(a, h1, .prose, strong, .dark\:text-white) {
-            color: @text;
-        }
-
-        a:hover {
-            color: @subtext0;
-        }
-
-        :is(h2, h3, h4, h5, h6, .dark\:text-gray-400) {
-            color: @subtext1;
-        }
-
-        // signed commits
-        .dark\:bg-green-900 {
-            background-color: @crust;
-            border-width: 1px;
-            border-color: @green;
-            /* border-radius: 2px; */
-        }
-
-        .dark\:bg-green-700 {
-            background-color: @green;
-            color: @mantle;
-        }
-
-        .dark\:bg-green-800 {
-            background-color: @base;
-        }
-
-        .dark\:text-green-400 {
-            color: @green;
-        }
-
-        :is(select, input, textarea, .btn, .btn-group-item.active) {
-            color: @text;
-            background-color: @base;
-            border-color: @crust;
-        }
-
-        input::placeholder {
-            color: @accent;
-        }
-
-        .btn-group-item {
-            color: @text;
-            background-color: @mantle;
-            border-color: @crust;
-        }
-
-        .btn-create {
-            color: @mantle;
-            background-color: @accent;
-            border-color: @accent;
-        }
-
-        .chroma {
-            color: @text;
-        }
-        :is(.c1, .cm) {
-            color: fade(@mauve, 55%);
-            font-style: italic;
-        }
-        :is(.k, .kr) {
-            color: @mauve;
-        }
-        .s1 {
-            color: @green;
-        }
-        .nx {
-            color: @blue;
-        }
-        .o {
-            color: @sapphire;
-        }
-        .err {
-            color: @peach;
-        }
-        .kt {
-            color: @red;
-        }
+    .dark\:bg-gray-800 {
+      background-color: @mantle;
     }
+
+    .dark\:text-red-400 {
+      color: @red;
+    }
+
+    .dark\:bg-gray-700 {
+      background-color: @crust;
+    }
+
+    :is(a, h1, .prose, strong, .dark\:text-white) {
+      color: @text;
+    }
+
+    a:hover {
+      color: @subtext0;
+    }
+
+    :is(h2, h3, h4, h5, h6, .dark\:text-gray-400) {
+      color: @subtext1;
+    }
+
+    // signed commits
+    .dark\:bg-green-900 {
+      background-color: @crust;
+      border-width: 1px;
+      border-color: @green;
+      /* border-radius: 2px; */
+    }
+
+    .dark\:bg-green-700 {
+      background-color: @green;
+      color: @mantle;
+    }
+
+    .dark\:bg-green-800 {
+      background-color: @base;
+    }
+
+    .dark\:text-green-400 {
+      color: @green;
+    }
+
+    :is(select, input, textarea, .btn, .btn-group-item.active) {
+      color: @text;
+      background-color: @base;
+      border-color: @crust;
+    }
+
+    input::placeholder {
+      color: @accent;
+    }
+
+    .btn-group-item {
+      color: @text;
+      background-color: @mantle;
+      border-color: @crust;
+    }
+
+    .btn-create {
+      color: @mantle;
+      background-color: @accent;
+      border-color: @accent;
+    }
+
+    .chroma {
+      color: @text;
+    }
+    :is(.c1, .cm) {
+      color: fade(@mauve, 55%);
+      font-style: italic;
+    }
+    :is(.k, .kr) {
+      color: @mauve;
+    }
+    .s1 {
+      color: @green;
+    }
+    .nx {
+      color: @blue;
+    }
+    .o {
+      color: @sapphire;
+    }
+    .err {
+      color: @peach;
+    }
+    .kt {
+      color: @red;
+    }
+  }
 }
