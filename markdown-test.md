@@ -459,3 +459,113 @@ mailto:someone@example.com
 <!--
 This comment will not appear when rendered.
 -->
+
+# Mermaid Diagram
+
+```mermaid
+flowchart TD
+    %% User
+    U([User]) --> A[Open Web Application]
+
+    %% Authentication
+    subgraph AUTH["Authentication Service"]
+        A --> B{Authenticated?}
+        B -- No --> C[Login Page]
+        C --> D[Validate Credentials]
+        D --> E{Valid?}
+        E -- No --> C
+        E -- Yes --> F[Issue JWT Token]
+        F --> G[Dashboard]
+        B -- Yes --> G
+    end
+
+    %% Frontend
+    subgraph FRONTEND["Frontend"]
+        G --> H[Load User Profile]
+        G --> I[Load Projects]
+        G --> J[Load Notifications]
+    end
+
+    %% API Gateway
+    subgraph API["API Gateway"]
+        H --> K
+        I --> K
+        J --> K
+        K[Route Request]
+    end
+
+    %% Backend Services
+    subgraph SERVICES["Microservices"]
+        K --> L[User Service]
+        K --> M[Project Service]
+        K --> N[Notification Service]
+        K --> O[Analytics Service]
+    end
+
+    %% Database Layer
+    subgraph DATA["Persistence Layer"]
+        L --> P[(Users DB)]
+        M --> Q[(Projects DB)]
+        N --> R[(Notifications DB)]
+        O --> S[(Analytics DB)]
+    end
+
+    %% Cache
+    subgraph CACHE["Caching"]
+        T[(Redis Cache)]
+    end
+
+    L <--> T
+    M <--> T
+    N <--> T
+
+    %% Event Bus
+    subgraph EVENTS["Event Bus"]
+        V((Kafka))
+    end
+
+    M --> V
+    L --> V
+    N --> V
+
+    %% Background Workers
+    subgraph WORKERS["Async Workers"]
+        W[Email Worker]
+        X[Search Indexer]
+        Y[Metrics Aggregator]
+    end
+
+    V --> W
+    V --> X
+    V --> Y
+
+    %% External Systems
+    subgraph EXTERNAL["External Services"]
+        Z1[Email Provider]
+        Z2[Search Engine]
+        Z3[Monitoring]
+    end
+
+    W --> Z1
+    X --> Z2
+    Y --> Z3
+
+    %% Error Handling
+    K --> ERR{Service Error?}
+    ERR -- Yes --> LOG[Log Error]
+    LOG --> RETRY{Retry?}
+    RETRY -- Yes --> K
+    RETRY -- No --> FAIL([Return Error])
+    ERR -- No --> OK([Return Success])
+
+    %% Styling
+    classDef db fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef service fill:#bbf,stroke:#333,stroke-width:1px;
+    classDef worker fill:#bfb,stroke:#333,stroke-width:1px;
+    classDef decision fill:#ffd966,stroke:#333,stroke-width:2px;
+
+    class P,Q,R,S,T db;
+    class L,M,N,O service;
+    class W,X,Y worker;
+    class B,E,ERR,RETRY decision;
+```
