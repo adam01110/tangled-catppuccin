@@ -184,6 +184,39 @@
       border-inline-start-color: @surface0;
     }
 
+    // start: alerts
+    details[data-callout="note" i] {
+      border-color: @blue;
+      > summary {
+        color: @blue;
+      }
+    }
+    details[data-callout="tip" i] {
+      border-color: @green;
+      > summary {
+        color: @green;
+      }
+    }
+    details[data-callout="important" i] {
+      border-color: @mauve;
+      > summary {
+        color: @mauve;
+      }
+    }
+    details[data-callout="warning" i] {
+      border-color: @yellow;
+      > summary {
+        color: @yellow;
+      }
+    }
+    details[data-callout="caution" i] {
+      border-color: @red;
+      > summary {
+        color: @red;
+      }
+    }
+    // end: alerts
+
     // inline code / background color for text within codeblocks
     // make sure background-color here is the same as the below .prose selector's background-color,
     // or the code text will have a different background color than the fenced codeblocks
