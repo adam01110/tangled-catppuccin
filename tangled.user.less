@@ -145,6 +145,15 @@
       border-color: @accent;
     }
 
+    // blockquotes
+    .prose
+      :where(blockquote):not(
+        :where([class~="not-prose"], [class~="not-prose"] *)
+      ) {
+      color: @subtext1;
+      border-inline-start-color: @surface0;
+    }
+
     // inline code / background color for text within codeblocks
     // make sure background-color here is the same as the below .prose selector's background-color,
     // or the code text will have a different background color than the fenced codeblocks
