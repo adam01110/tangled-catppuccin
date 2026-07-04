@@ -145,6 +145,20 @@
       border-color: @accent;
     }
 
+    // inline code / background color for text within codeblocks
+    // make sure background-color here is the same as the below .prose selector's background-color,
+    // or the code text will have a different background color than the fenced codeblocks
+    code {
+      color: @text;
+      background-color: @crust;
+    }
+
+    // fenced codeblocks with no syntax highlighting set
+    .prose
+      :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+      background-color: @crust;
+    }
+
     // start: syntax highlighting
     .chroma {
       color: @text;
