@@ -1,0 +1,356 @@
+:root {
+  --color-background-default: #ffffff;
+  --color-background-subtle: #f9fafb;
+  --color-background-inset: #f3f4f6;
+  --color-background-muted: #e5e7eb;
+  --color-background-strong: #d1d5db;
+  --color-background-canvas: #f3f4f6;
+  --color-background-highlight: #fef08a;
+  --color-background-success-subtle: #dcfce7;
+  --color-background-success-subtle-hover: #bbf7d0;
+  --color-background-success-emphasis: #16a34a;
+  --color-background-success-emphasis-hover: #15803d;
+  --color-background-danger-subtle: #ffe2e2;
+  --color-background-danger-subtle-hover: #fecaca;
+  --color-background-danger-emphasis: #fca5a5;
+  --color-background-danger-emphasis-hover: #f87171;
+  --color-background-warning-subtle: #fffbeb;
+  --color-background-warning-subtle-hover: #fef3c7;
+  --color-background-warning-emphasis: #f59e0b;
+  --color-background-info-subtle: #eef2ff;
+  --color-background-info-subtle-hover: #e0e7ff;
+  --color-background-info-emphasis: #4f46e5;
+  --color-background-emphasis: #111827;
+  --color-background-navigation-frame: #f9fafb;
+  --color-background-navigation-item: #ffffff;
+  --color-foreground-default: #111827;
+  --color-foreground-muted: #4b5563;
+  --color-foreground-subtle: #6b7280;
+  --color-foreground-placeholder: #9ca3af;
+  --color-foreground-disabled: #d1d5db;
+  --color-foreground-on-emphasis: #ffffff;
+  --color-foreground-inverted: #f3f4f6;
+  --color-foreground-highlight: #854d0e;
+  --color-foreground-success: #16a34a;
+  --color-foreground-success-strong: #166534;
+  --color-foreground-success-disabled: #16a34a80;
+  --color-foreground-danger: #dc2626;
+  --color-foreground-danger-strong: #991b1b;
+  --color-foreground-danger-subtle: #f87171;
+  --color-foreground-danger-disabled: #fca5a5;
+  --color-foreground-warning: #d97706;
+  --color-foreground-warning-strong: #92400e;
+  --color-foreground-warning-disabled: #fcd34d;
+  --color-foreground-info: #4338ca;
+  --color-foreground-info-strong: #3730a3;
+  --color-foreground-link-default: #111827;
+  --color-foreground-link-hover: #374151;
+  --color-foreground-link-disabled: #9ca3af;
+  --color-foreground-link-danger: #dc2626;
+  --color-foreground-link-danger-hover: #ef4444;
+  --color-foreground-link-success: #16a34a;
+  --color-foreground-link-success-hover: #22c55e;
+  --color-foreground-link-warning: #d97706;
+  --color-foreground-link-warning-hover: #f59e0b;
+  --color-foreground-link-info: #4f46e5;
+  --color-foreground-link-info-hover: #6366f1;
+  --color-border-default: #e5e7eb;
+  --color-border-subtle: #f3f4f6;
+  --color-border-strong: #d1d5db;
+  --color-border-disabled: #e5e7eb;
+  --color-border-focus: #9ca3af;
+  --color-border-focus-success: #22c55e;
+  --color-border-focus-danger: #ef4444;
+  --color-border-success: #15803d;
+  --color-border-danger: #fca5a5;
+  --color-border-danger-subtle: #fecaca;
+  --color-border-navigation-item-active: #e5e7eb;
+  --color-shadow-inner-strong: #d1d5db;
+  --color-shadow-inner-strong-hover: #d1d5db;
+  --color-shadow-inner-subtle: #e5e7eb;
+  --color-shadow-ambient-strong: var(--color-alpha-dark-10);
+  --color-shadow-ambient-subtle: var(--color-alpha-dark-5);
+  --color-inverse-background: #1f2937;
+  --color-inverse-foreground: #f3f4f6;
+  --color-inverse-border: #374151;
+  --color-inverse-shadow-inner: #111827;
+  --shadow-small: 0 2px 4px var(--color-shadow-ambient-strong);
+  --color-alpha-light-5: color-mix(
+    in srgb,
+    var(--color-background-default) 5%,
+    transparent
+  );
+  --color-alpha-light-10: color-mix(
+    in srgb,
+    var(--color-background-default) 10%,
+    transparent
+  );
+  --color-alpha-light-15: color-mix(
+    in srgb,
+    var(--color-background-default) 15%,
+    transparent
+  );
+  --color-alpha-light-20: color-mix(
+    in srgb,
+    var(--color-background-default) 20%,
+    transparent
+  );
+  --color-alpha-light-25: color-mix(
+    in srgb,
+    var(--color-background-default) 25%,
+    transparent
+  );
+  --color-alpha-light-30: color-mix(
+    in srgb,
+    var(--color-background-default) 30%,
+    transparent
+  );
+  --color-alpha-light-35: color-mix(
+    in srgb,
+    var(--color-background-default) 35%,
+    transparent
+  );
+  --color-alpha-light-40: color-mix(
+    in srgb,
+    var(--color-background-default) 40%,
+    transparent
+  );
+  --color-alpha-light-45: color-mix(
+    in srgb,
+    var(--color-background-default) 45%,
+    transparent
+  );
+  --color-alpha-light-50: color-mix(
+    in srgb,
+    var(--color-background-default) 50%,
+    transparent
+  );
+  --color-alpha-light-55: color-mix(
+    in srgb,
+    var(--color-background-default) 55%,
+    transparent
+  );
+  --color-alpha-light-60: color-mix(
+    in srgb,
+    var(--color-background-default) 60%,
+    transparent
+  );
+  --color-alpha-light-65: color-mix(
+    in srgb,
+    var(--color-background-default) 65%,
+    transparent
+  );
+  --color-alpha-light-70: color-mix(
+    in srgb,
+    var(--color-background-default) 70%,
+    transparent
+  );
+  --color-alpha-light-75: color-mix(
+    in srgb,
+    var(--color-background-default) 75%,
+    transparent
+  );
+  --color-alpha-light-80: color-mix(
+    in srgb,
+    var(--color-background-default) 80%,
+    transparent
+  );
+  --color-alpha-light-85: color-mix(
+    in srgb,
+    var(--color-background-default) 85%,
+    transparent
+  );
+  --color-alpha-light-90: color-mix(
+    in srgb,
+    var(--color-background-default) 90%,
+    transparent
+  );
+  --color-alpha-light-95: color-mix(
+    in srgb,
+    var(--color-background-default) 95%,
+    transparent
+  );
+  --color-alpha-dark-5: color-mix(
+    in srgb,
+    var(--color-foreground-default) 5%,
+    transparent
+  );
+  --color-alpha-dark-10: color-mix(
+    in srgb,
+    var(--color-foreground-default) 10%,
+    transparent
+  );
+  --color-alpha-dark-15: color-mix(
+    in srgb,
+    var(--color-foreground-default) 15%,
+    transparent
+  );
+  --color-alpha-dark-20: color-mix(
+    in srgb,
+    var(--color-foreground-default) 20%,
+    transparent
+  );
+  --color-alpha-dark-25: color-mix(
+    in srgb,
+    var(--color-foreground-default) 25%,
+    transparent
+  );
+  --color-alpha-dark-30: color-mix(
+    in srgb,
+    var(--color-foreground-default) 30%,
+    transparent
+  );
+  --color-alpha-dark-35: color-mix(
+    in srgb,
+    var(--color-foreground-default) 35%,
+    transparent
+  );
+  --color-alpha-dark-40: color-mix(
+    in srgb,
+    var(--color-foreground-default) 40%,
+    transparent
+  );
+  --color-alpha-dark-45: color-mix(
+    in srgb,
+    var(--color-foreground-default) 45%,
+    transparent
+  );
+  --color-alpha-dark-50: color-mix(
+    in srgb,
+    var(--color-foreground-default) 50%,
+    transparent
+  );
+  --color-alpha-dark-55: color-mix(
+    in srgb,
+    var(--color-foreground-default) 55%,
+    transparent
+  );
+  --color-alpha-dark-60: color-mix(
+    in srgb,
+    var(--color-foreground-default) 60%,
+    transparent
+  );
+  --color-alpha-dark-65: color-mix(
+    in srgb,
+    var(--color-foreground-default) 65%,
+    transparent
+  );
+  --color-alpha-dark-70: color-mix(
+    in srgb,
+    var(--color-foreground-default) 70%,
+    transparent
+  );
+  --color-alpha-dark-75: color-mix(
+    in srgb,
+    var(--color-foreground-default) 75%,
+    transparent
+  );
+  --color-alpha-dark-80: color-mix(
+    in srgb,
+    var(--color-foreground-default) 80%,
+    transparent
+  );
+  --color-alpha-dark-85: color-mix(
+    in srgb,
+    var(--color-foreground-default) 85%,
+    transparent
+  );
+  --color-alpha-dark-90: color-mix(
+    in srgb,
+    var(--color-foreground-default) 90%,
+    transparent
+  );
+  --color-alpha-dark-95: color-mix(
+    in srgb,
+    var(--color-foreground-default) 95%,
+    transparent
+  );
+  --color-ansi-black: #6c6f85;
+  --color-ansi-red: #d20f39;
+  --color-ansi-green: #40a02b;
+  --color-ansi-yellow: #df8e1d;
+  --color-ansi-blue: #1e66f5;
+  --color-ansi-magenta: #8839ef;
+  --color-ansi-cyan: #179299;
+  --color-ansi-white: #4c4f69;
+  --color-ansi-bright-black: #8c8fa1;
+  --color-ansi-bright-red: #e64553;
+  --color-ansi-bright-green: #40a02b;
+  --color-ansi-bright-yellow: #e5c890;
+  --color-ansi-bright-blue: #209fb5;
+  --color-ansi-bright-magenta: #ea76cb;
+  --color-ansi-bright-cyan: #04a5e5;
+  --color-ansi-bright-white: #bcc0cc;
+  --color-syntax-foreground: #4c4f69;
+  --color-syntax-comment: #7c7f93;
+  --color-syntax-string: #40a02b;
+  --color-syntax-keyword: #8839ef;
+  --color-syntax-function: #1e66f5;
+  --color-syntax-constant: #fe640b;
+  --color-syntax-parameter: #e64553;
+  --color-syntax-punctuation: #7c7f93;
+  --color-syntax-link: #1e66f5;
+  --color-syntax-inserted: #40a02b;
+  --color-syntax-deleted: #d20f39;
+  --color-syntax-changed: #df8e1d;
+}
+:root {
+  /* the "tangled" theme (pierre.ts) binds --diffs-bg/--diffs-fg to these and
+	   forces color-scheme: dark. without them the bg chain goes
+	   guaranteed-invalid and light-dark() is stuck on the dark branch */
+  --diffs-background: var(--color-background-default);
+  --diffs-foreground: var(--color-syntax-foreground);
+
+  --diffs-token-comment: var(--color-syntax-comment);
+  --diffs-token-string: var(--color-syntax-string);
+  --diffs-token-string-expression: var(--color-syntax-string);
+  --diffs-token-keyword: var(--color-syntax-keyword);
+  --diffs-token-function: var(--color-syntax-function);
+  --diffs-token-constant: var(--color-syntax-constant);
+  --diffs-token-parameter: var(--color-syntax-parameter);
+  --diffs-token-punctuation: var(--color-syntax-punctuation);
+  --diffs-token-link: var(--color-syntax-link);
+  --diffs-token-inserted: var(--color-syntax-inserted);
+  --diffs-token-deleted: var(--color-syntax-deleted);
+  --diffs-token-changed: var(--color-syntax-changed);
+}
+
+/* Override Pierre's unlayered :host stylesheet using unlayered :root diffs-container. */
+
+:root diffs-container {
+  --diffs-font-family: var(--font-mono);
+  --diffs-font-size: 0.8125rem;
+  --diffs-line-height: calc(20 / 13);
+  color-scheme: light dark;
+  --diffs-light-bg: var(--color-background-default);
+  --diffs-dark-bg: var(--color-background-default);
+  --diffs-bg-separator-override: var(--color-background-inset);
+  --diffs-fg-number-override: var(--color-foreground-placeholder);
+
+  --diffs-bg-gutter: var(--color-background-subtle);
+  --diffs-bg-gutter-wash: transparent;
+
+  --diffs-bg-addition-override: var(--color-background-success-subtle);
+  --diffs-bg-deletion-override: var(--color-background-danger-subtle);
+  --diffs-addition-color-override: var(--color-foreground-success);
+  --diffs-deletion-color-override: var(--color-foreground-danger);
+
+  --diffs-editor-selection-bg: color-mix(in srgb, Highlight 50%, transparent);
+  --diffs-editor-line-highlight-border: transparent;
+}
+
+.bg-background-default {
+  background-color: var(--color-background-default);
+}
+.text-foreground-default {
+  color: var(--color-foreground-default);
+}
+.border-border-default {
+  border: 1px solid var(--color-border-default);
+}
+.ansi-red-fg {
+  color: var(--color-ansi-red);
+}
+.markup a {
+  color: var(--color-foreground-link-default);
+}

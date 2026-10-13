@@ -1,0 +1,25 @@
+{
+  "name": "tangled-catppuccin",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "bun x oxfmt --write --ignore-path .oxfmtignore .",
+    "format:check": "bun x oxfmt --check --ignore-path .oxfmtignore .",
+    "lint": "bun x oxlint",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test --timeout 30000",
+    "test:browser": "bun test tests/browser.test.ts --timeout 30000",
+    "compile": "bun scripts/compile.ts",
+    "ci": "bun run format:check && bun run lint && bun run typecheck && bun run test"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.3",
+    "@types/less": "3.0.8",
+    "less": "4.6.4",
+    "oxfmt": "0.72.0",
+    "oxlint": "1.87.0",
+    "playwright": "1.58.2",
+    "typescript": "5.9.3"
+  },
+  "packageManager": "bun@1.4.2"
+}

@@ -2,7 +2,7 @@
 @name tangled.org Catppuccin
 @description A Catppuccin theme for Tangled, the Atmosphere social coding platform.
 @namespace csw.im
-@version 1.0.0-dev
+@version 1.1.0
 @author csw.im <cswimr@csw.im> (https://tangled.org/csw.im)
 @homepageURL https://tangled.org/csw.im/tangled-catppuccin
 @supportURL https://tangled.org/csw.im/tangled-catppuccin/issues
@@ -14,257 +14,1230 @@
 @var checkbox systemFont "Use System Font" 0
 ==/UserStyle== */
 
-@import "https://userstyles.catppuccin.com/lib/lib.less";
+@import "https://userstyles.catppuccin.com/lib/std/v1.less";
 
 @-moz-document domain("tangled.org") {
+  // Site preference wins; the media query is only the automatic fallback.
   :root {
-    @media (prefers-color-scheme: light) {
-      #catppuccin(@lightFlavor);
-    }
-    @media (prefers-color-scheme: dark) {
-      #catppuccin(@darkFlavor);
-    }
-    #overrideFont();
+    #palette(@lightFlavor);
+    #legacy();
+    #font();
   }
-
-  #overrideFont() when (@systemFont = 1) {
-    font-family: system-ui;
-    .font-mono {
-      font-family: monospace, system-ui;
-    }
-    code {
-      font-family: monospace, system-ui;
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      #palette(@darkFlavor);
+      #legacy-dark();
     }
   }
+  :root[data-theme="dark"] {
+    #palette(@darkFlavor);
+    #legacy-dark();
+  }
+  :root[data-theme="light"] {
+    #palette(@lightFlavor);
+  }
 
-  #catppuccin(@flavor) {
+  #palette(@flavor) {
     #lib.palette();
-    #lib.defaults();
+    @accent: @catppuccin[@@flavor][@@accentColor];
+    color-scheme: if((@flavor = latte), light, dark) !important;
+    --ctp-rosewater: @rosewater;
+    --ctp-flamingo: @flamingo;
+    --ctp-pink: @pink;
+    --ctp-mauve: @mauve;
+    --ctp-red: @red;
+    --ctp-maroon: @maroon;
+    --ctp-peach: @peach;
+    --ctp-yellow: @yellow;
+    --ctp-green: @green;
+    --ctp-teal: @teal;
+    --ctp-sky: @sky;
+    --ctp-sapphire: @sapphire;
+    --ctp-blue: @blue;
+    --ctp-lavender: @lavender;
+    --ctp-text: @text;
+    --ctp-subtext1: @subtext1;
+    --ctp-subtext0: @subtext0;
+    --ctp-overlay2: @overlay2;
+    --ctp-overlay1: @overlay1;
+    --ctp-overlay0: @overlay0;
+    --ctp-surface2: @surface2;
+    --ctp-surface1: @surface1;
+    --ctp-surface0: @surface0;
+    --ctp-base: @base;
+    --ctp-mantle: @mantle;
+    --ctp-crust: @crust;
+    --ctp-accent: @accent;
 
-    ::selection {
-      background-color: fade(@accent, 30%);
+    // Tangled's Svelte frontend reads these tokens.
+    --color-background-default: @base !important;
+    --color-background-subtle: @mantle !important;
+    --color-background-inset: @crust !important;
+    --color-background-muted: @surface0 !important;
+    --color-background-strong: @surface1 !important;
+    --color-background-canvas: @mantle !important;
+    --color-background-highlight: fade(@yellow, 20%) !important;
+    --color-background-emphasis: @accent !important;
+    --color-background-navigation-frame: @mantle !important;
+    --color-background-navigation-item: @base !important;
+    --color-foreground-default: @text !important;
+    --color-foreground-muted: @subtext1 !important;
+    --color-foreground-subtle: @subtext0 !important;
+    --color-foreground-placeholder: @overlay2 !important;
+    --color-foreground-disabled: @overlay0 !important;
+    --color-foreground-on-emphasis: @base !important;
+    --color-foreground-inverted: @base !important;
+    --color-foreground-highlight: @yellow !important;
+    --color-foreground-link-default: @accent !important;
+    --color-foreground-link-hover: @text !important;
+    --color-foreground-link-disabled: @overlay0 !important;
+    --color-border-default: @surface0 !important;
+    --color-border-subtle: @surface0 !important;
+    --color-border-strong: @surface2 !important;
+    --color-border-disabled: @surface0 !important;
+    --color-border-focus: @accent !important;
+    --color-border-focus-success: @green !important;
+    --color-border-focus-danger: @red !important;
+    --color-border-success: @green !important;
+    --color-border-danger: @red !important;
+    --color-border-danger-subtle: fade(@red, 30%) !important;
+    --color-border-navigation-item-active: @surface1 !important;
+    --color-background-success-subtle: fade(@green, 15%) !important;
+    --color-background-success-subtle-hover: fade(@green, 25%) !important;
+    --color-background-success-emphasis: @green !important;
+    --color-background-success-emphasis-hover: darken(@green, 5%) !important;
+    --color-foreground-success: @green !important;
+    --color-foreground-success-strong: @green !important;
+    --color-foreground-success-disabled: fade(@green, 50%) !important;
+    --color-foreground-link-success: @green !important;
+    --color-foreground-link-success-hover: @green !important;
+    --color-background-danger-subtle: fade(@red, 15%) !important;
+    --color-background-danger-subtle-hover: fade(@red, 25%) !important;
+    --color-background-danger-emphasis: @red !important;
+    --color-background-danger-emphasis-hover: darken(@red, 5%) !important;
+    --color-foreground-danger: @red !important;
+    --color-foreground-danger-strong: @red !important;
+    --color-foreground-danger-disabled: fade(@red, 50%) !important;
+    --color-foreground-link-danger: @red !important;
+    --color-foreground-link-danger-hover: @red !important;
+    --color-background-warning-subtle: fade(@yellow, 15%) !important;
+    --color-background-warning-subtle-hover: fade(@yellow, 25%) !important;
+    --color-background-warning-emphasis: @yellow !important;
+    --color-foreground-warning: @yellow !important;
+    --color-foreground-warning-strong: @yellow !important;
+    --color-foreground-warning-disabled: fade(@yellow, 50%) !important;
+    --color-foreground-link-warning: @yellow !important;
+    --color-foreground-link-warning-hover: @yellow !important;
+    --color-background-info-subtle: fade(@blue, 15%) !important;
+    --color-background-info-subtle-hover: fade(@blue, 25%) !important;
+    --color-background-info-emphasis: @blue !important;
+    --color-background-info-emphasis-hover: darken(@blue, 5%) !important;
+    --color-foreground-info: @blue !important;
+    --color-foreground-info-strong: @blue !important;
+    --color-foreground-info-disabled: fade(@blue, 50%) !important;
+    --color-foreground-link-info: @blue !important;
+    --color-foreground-link-info-hover: @blue !important;
+    --color-foreground-danger-subtle: @maroon !important;
+    --color-drawing-accent: @accent !important;
+    --color-drawing-accent-recess: darken(@accent, 8%) !important;
+    --color-drawing-accent-edge: darken(@accent, 20%) !important;
+    --color-shadow-ring: fade(@text, 10%) !important;
+    --color-shadow-inner-strong: @surface1 !important;
+    --color-shadow-inner-strong-hover: @surface2 !important;
+    --color-shadow-inner-subtle: @surface0 !important;
+    --color-shadow-ambient-strong: fade(@crust, 30%) !important;
+    --color-shadow-ambient-subtle: fade(@crust, 15%) !important;
+    --color-inverse-background: @text !important;
+    --color-inverse-foreground: @base !important;
+    --color-inverse-border: @subtext1 !important;
+    --color-inverse-shadow-inner: @subtext0 !important;
+    --color-ansi-black: @subtext0 !important;
+    --color-ansi-red: @red !important;
+    --color-ansi-green: @green !important;
+    --color-ansi-yellow: @yellow !important;
+    --color-ansi-blue: @blue !important;
+    --color-ansi-magenta: @mauve !important;
+    --color-ansi-cyan: @teal !important;
+    --color-ansi-white: @text !important;
+    --color-ansi-bright-black: @overlay2 !important;
+    --color-ansi-bright-red: @maroon !important;
+    --color-ansi-bright-green: @green !important;
+    --color-ansi-bright-yellow: @peach !important;
+    --color-ansi-bright-blue: @sapphire !important;
+    --color-ansi-bright-magenta: @pink !important;
+    --color-ansi-bright-cyan: @sky !important;
+    --color-ansi-bright-white: @subtext1 !important;
+    --color-syntax-foreground: @text !important;
+    --color-syntax-comment: @overlay2 !important;
+    --color-syntax-string: @green !important;
+    --color-syntax-keyword: @mauve !important;
+    --color-syntax-function: @blue !important;
+    --color-syntax-constant: @peach !important;
+    --color-syntax-parameter: @maroon !important;
+    --color-syntax-punctuation: @subtext0 !important;
+    --color-syntax-link: @blue !important;
+    --color-syntax-inserted: @green !important;
+    --color-syntax-deleted: @red !important;
+    --color-syntax-changed: @yellow !important;
+  }
+
+  #font() when (@systemFont = 1) {
+    --font-sans: system-ui !important;
+    --font-mono: ui-monospace, monospace !important;
+    body,
+    input,
+    textarea,
+    select,
+    button {
+      font-family: system-ui !important;
     }
-
-    .dark\:bg-gray-900 {
-      background-color: @base;
+    code,
+    pre,
+    .font-mono {
+      font-family: ui-monospace, monospace !important;
     }
+  }
 
-    .dark\:bg-gray-800 {
-      background-color: @mantle;
+  // Exact class selectors preserve state variants and avoid matching unrelated classes.
+  #legacy() {
+    .backdrop\:bg-gray-400\/50::backdrop {
+      background-color: color-mix(in srgb, var(--ctp-surface2) 50%, transparent) !important;
     }
-
-    .dark\:text-red-400 {
-      color: @red;
+    .before\:ring-indigo-600::before,
+    .ring-indigo-600 {
+      --tw-ring-color: var(--ctp-mauve) !important;
     }
-
-    .dark\:bg-gray-700 {
-      background-color: @crust;
+    .before\:text-gray-300::before,
+    .text-gray-300 {
+      color: var(--ctp-overlay2) !important;
     }
-
-    :is(a, h1, .prose, strong, .dark\:text-white) {
-      color: @text;
+    .bg-amber-100,
+    .bg-amber-50,
+    .bg-yellow-100,
+    .bg-yellow-200,
+    .peer:target ~ .peer-target\:bg-yellow-200 {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 15%, transparent) !important;
     }
-
-    a:hover {
-      color: @subtext0;
+    .bg-amber-400\/30,
+    .bg-yellow-200\/30,
+    .bg-yellow-700\/30,
+    .group\/line:target .group-target\/line\:bg-yellow-200\/30,
+    .target\:bg-yellow-200\/30:target {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 30%, transparent) !important;
     }
-
-    :is(h2, h3, h4, h5, h6, .dark\:text-gray-400) {
-      color: @subtext1;
+    .bg-black,
+    .bg-gray-100,
+    .bg-slate-100,
+    .disabled\:bg-gray-100:disabled,
+    .disabled\:indeterminate\:bg-gray-100:disabled:indeterminate,
+    .file\:bg-gray-100::file-selector-button,
+    .file\:hover\:bg-gray-100:hover::file-selector-button,
+    .focus-within\:bg-gray-100:focus-within,
+    .hover\:bg-gray-100:hover {
+      background-color: var(--ctp-crust) !important;
     }
-
-    // signed commits
-    .dark\:bg-green-900 {
-      background-color: @base;
-      border-width: 1px;
-      border-color: @green;
-      /* border-radius: 2px; */
+    .bg-black\/50,
+    .bg-gray-100\/50,
+    .hover\:bg-gray-100\/50:hover {
+      background-color: color-mix(in srgb, var(--ctp-crust) 50%, transparent) !important;
     }
-
-    .dark\:bg-green-700 {
-      background-color: @green;
-      color: @mantle;
+    .bg-black\/60 {
+      background-color: color-mix(in srgb, var(--ctp-crust) 60%, transparent) !important;
     }
-
-    .dark\:bg-green-800 {
-      background-color: @base;
+    .bg-blue-100,
+    .bg-blue-200,
+    .bg-blue-50 {
+      background-color: color-mix(in srgb, var(--ctp-blue) 15%, transparent) !important;
     }
-
-    .dark\:text-green-400 {
-      color: @green;
+    .bg-blue-50\/25,
+    .bg-blue-500 {
+      background-color: color-mix(in srgb, var(--ctp-blue) 25%, transparent) !important;
     }
-
-    .dark\:bg-purple-700 {
-      background-color: @mauve;
+    .bg-gray-200,
+    .bg-slate-200,
+    .file\:bg-gray-200::file-selector-button,
+    .group\/comments[open] .group-open\/comments\:bg-gray-200,
+    .hover\:bg-gray-200:hover,
+    .hover\:file\:bg-gray-200:hover::file-selector-button,
+    .peer\/none:checked ~ .peer-checked\/none\:bg-gray-200 {
+      background-color: var(--ctp-surface0) !important;
     }
+    .bg-gray-200\/30 {
+      background-color: color-mix(in srgb, var(--ctp-surface0) 30%, transparent) !important;
+    }
+    .bg-gray-300,
+    .disabled\:checked\:bg-gray-300:disabled:checked {
+      background-color: var(--ctp-surface1) !important;
+    }
+    .bg-gray-400,
+    .group\/summary:hover .group-hover\/summary\:bg-gray-400,
+    .hover\:bg-gray-400:hover {
+      background-color: var(--ctp-surface2) !important;
+    }
+    .bg-gray-50,
+    .hover\:bg-gray-50:hover {
+      background-color: var(--ctp-mantle) !important;
+    }
+    .bg-gray-600 {
+      background-color: var(--ctp-overlay1) !important;
+    }
+    .bg-gray-600\/10 {
+      background-color: color-mix(in srgb, var(--ctp-overlay1) 10%, transparent) !important;
+    }
+    .bg-gray-800,
+    .checked\:hover\:bg-gray-800:checked:hover {
+      background-color: var(--ctp-subtext0) !important;
+    }
+    .bg-gray-900,
+    .checked\:bg-gray-900:checked,
+    .indeterminate\:bg-gray-900:indeterminate {
+      background-color: var(--ctp-text) !important;
+    }
+    .bg-green-100,
+    .bg-green-200,
+    .bg-green-50,
+    .peer\/vouch:checked ~ .peer-checked\/vouch\:bg-green-200 {
+      background-color: color-mix(in srgb, var(--ctp-green) 15%, transparent) !important;
+    }
+    .bg-green-300,
+    .bg-green-400,
+    .bg-green-500,
+    .bg-green-600,
+    .disabled\:bg-green-400:disabled,
+    .hover\:bg-green-700:hover {
+      background-color: color-mix(in srgb, var(--ctp-green) 25%, transparent) !important;
+    }
+    .bg-indigo-100,
+    .bg-purple-200,
+    .bg-purple-50 {
+      background-color: color-mix(in srgb, var(--ctp-mauve) 15%, transparent) !important;
+    }
+    .bg-indigo-50\/50 {
+      background-color: color-mix(in srgb, var(--ctp-mauve) 50%, transparent) !important;
+    }
+    .bg-indigo-500,
+    .bg-indigo-600,
+    .bg-purple-600,
+    .disabled\:bg-indigo-400:disabled,
+    .hover\:bg-indigo-700:hover {
+      background-color: color-mix(in srgb, var(--ctp-mauve) 25%, transparent) !important;
+    }
+    .bg-orange-100,
+    .bg-orange-50 {
+      background-color: color-mix(in srgb, var(--ctp-peach) 15%, transparent) !important;
+    }
+    .bg-pink-200 {
+      background-color: color-mix(in srgb, var(--ctp-pink) 15%, transparent) !important;
+    }
+    .bg-red-100,
+    .bg-red-200,
+    .bg-red-50,
+    .hover\:bg-red-100:hover,
+    .peer\/denounce:checked ~ .peer-checked\/denounce\:bg-red-200 {
+      background-color: color-mix(in srgb, var(--ctp-red) 15%, transparent) !important;
+    }
+    .bg-red-50\/60 {
+      background-color: color-mix(in srgb, var(--ctp-red) 60%, transparent) !important;
+    }
+    .bg-red-500,
+    .bg-red-600,
+    .disabled\:bg-red-400:disabled,
+    .hover\:bg-red-700:hover {
+      background-color: color-mix(in srgb, var(--ctp-red) 25%, transparent) !important;
+    }
+    .bg-white,
+    .disabled\:hover\:bg-white:disabled:hover,
+    .peer\/basic:checked ~ .peer-checked\/basic\:bg-white,
+    .peer\/kv:checked ~ .peer-checked\/kv\:bg-white {
+      background-color: var(--ctp-base) !important;
+    }
+    .bg-white\/50,
+    .hover\:bg-white\/50:hover {
+      background-color: color-mix(in srgb, var(--ctp-base) 50%, transparent) !important;
+    }
+    .bg-yellow-300\/70 {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 70%, transparent) !important;
+    }
+    .bg-yellow-400,
+    .bg-yellow-500 {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 25%, transparent) !important;
+    }
+    .bg-yellow-600\/60 {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 60%, transparent) !important;
+    }
+    .border-amber-200,
+    .border-amber-300,
+    .border-amber-500,
+    .border-yellow-200,
+    .border-yellow-400 {
+      border-color: var(--ctp-yellow) !important;
+    }
+    .border-black,
+    .border-gray-100,
+    .border-gray-200,
+    .border-gray-300,
+    .disabled\:border-gray-200:disabled,
+    .disabled\:border-gray-300:disabled,
+    .disabled\:checked\:border-gray-300:disabled:checked,
+    .disabled\:indeterminate\:border-gray-200:disabled:indeterminate,
+    .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+    .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+    .divide-gray-300 > :not([hidden]) ~ :not([hidden]),
+    .hover\:border-gray-300:hover {
+      border-color: var(--ctp-surface0) !important;
+    }
+    .border-blue-100,
+    .border-blue-200,
+    .border-blue-300,
+    .border-blue-400 {
+      border-color: var(--ctp-blue) !important;
+    }
+    .border-gray-400,
+    .hover\:border-gray-400:hover {
+      border-color: var(--ctp-surface1) !important;
+    }
+    .border-gray-700,
+    .hover\:border-gray-900:hover {
+      border-color: var(--ctp-surface2) !important;
+    }
+    .border-green-200,
+    .border-green-300,
+    .border-green-400,
+    .border-green-700,
+    .hover\:border-green-800:hover {
+      border-color: var(--ctp-green) !important;
+    }
+    .border-green-600\/25 {
+      border-color: color-mix(in srgb, var(--ctp-green) 25%, transparent) !important;
+    }
+    .border-green-800\/15 {
+      border-color: color-mix(in srgb, var(--ctp-green) 15%, transparent) !important;
+    }
+    .border-indigo-700,
+    .border-purple-400,
+    .border-purple-500,
+    .hover\:border-indigo-800:hover {
+      border-color: var(--ctp-mauve) !important;
+    }
+    .border-orange-300 {
+      border-color: var(--ctp-peach) !important;
+    }
+    .border-red-200,
+    .border-red-300,
+    .border-red-400,
+    .border-red-500,
+    .border-red-700,
+    .hover\:border-red-800:hover {
+      border-color: var(--ctp-red) !important;
+    }
+    .border-red-600\/25 {
+      border-color: color-mix(in srgb, var(--ctp-red) 25%, transparent) !important;
+    }
+    .file\:text-gray-700::file-selector-button,
+    .group\/summary:hover .group-hover\/summary\:text-gray-600,
+    .hover\:text-gray-600:hover,
+    .hover\:text-gray-700:hover,
+    .text-gray-600,
+    .text-gray-700 {
+      color: var(--ctp-subtext1) !important;
+    }
+    .focus-visible\:outline-gray-400:focus-visible {
+      outline-color: var(--ctp-surface1) !important;
+    }
+    .focus-visible\:outline-green-500:focus-visible {
+      outline-color: var(--ctp-green) !important;
+    }
+    .focus-visible\:outline-indigo-500:focus-visible {
+      outline-color: var(--ctp-mauve) !important;
+    }
+    .focus-visible\:outline-red-500:focus-visible {
+      outline-color: var(--ctp-red) !important;
+    }
+    .focus-within\:before\:ring-gray-300:focus-within::before,
+    .ring-gray-200 {
+      --tw-ring-color: var(--ctp-surface0) !important;
+    }
+    .focus-within\:ring-blue-500:focus-within,
+    .focus\:ring-blue-500:focus {
+      --tw-ring-color: var(--ctp-blue) !important;
+    }
+    .focus\:ring-gray-400:focus,
+    .peer\/none:checked ~ .peer-checked\/none\:ring-gray-400 {
+      --tw-ring-color: var(--ctp-surface1) !important;
+    }
+    .group:hover .group-hover\:bg-gray-100\/25,
+    .hover\:bg-gray-100\/25:hover {
+      background-color: color-mix(in srgb, var(--ctp-crust) 25%, transparent) !important;
+    }
+    .group:hover .group-hover\:bg-gray-500 {
+      background-color: var(--ctp-overlay0) !important;
+    }
+    .group\/line:target .group-target\/line\:text-black,
+    .hover\:text-black:hover,
+    .hover\:text-gray-800:hover,
+    .hover\:text-gray-900:hover,
+    .hover\:text-white:hover,
+    .peer\/none:checked ~ .peer-checked\/none\:text-gray-800,
+    .text-black,
+    .text-gray-800,
+    .text-gray-900,
+    .text-white {
+      color: var(--ctp-text) !important;
+    }
+    .hover\:text-amber-700:hover,
+    .text-amber-500,
+    .text-amber-600,
+    .text-amber-700,
+    .text-amber-800,
+    .text-yellow-500,
+    .text-yellow-600,
+    .text-yellow-700,
+    .text-yellow-800 {
+      color: var(--ctp-yellow) !important;
+    }
+    .hover\:text-blue-700:hover,
+    .text-blue-500,
+    .text-blue-600,
+    .text-blue-700,
+    .text-blue-800 {
+      color: var(--ctp-blue) !important;
+    }
+    .hover\:text-gray-500:hover,
+    .placeholder-gray-400::placeholder,
+    .text-gray-400,
+    .text-gray-500 {
+      color: var(--ctp-subtext0) !important;
+    }
+    .hover\:text-green-600:hover,
+    .hover\:text-green-700:hover,
+    .peer\/vouch:checked ~ .peer-checked\/vouch\:text-green-800,
+    .text-green-500,
+    .text-green-600,
+    .text-green-700,
+    .text-green-800,
+    .text-green-900 {
+      color: var(--ctp-green) !important;
+    }
+    .hover\:text-indigo-200:hover,
+    .hover\:text-indigo-900:hover,
+    .text-indigo-500,
+    .text-indigo-700,
+    .text-indigo-800,
+    .text-purple-500,
+    .text-purple-600,
+    .text-purple-700 {
+      color: var(--ctp-mauve) !important;
+    }
+    .hover\:text-orange-800:hover,
+    .text-orange-400,
+    .text-orange-500,
+    .text-orange-600 {
+      color: var(--ctp-peach) !important;
+    }
+    .hover\:text-red-400:hover,
+    .hover\:text-red-500:hover,
+    .hover\:text-red-600:hover,
+    .hover\:text-red-700:hover,
+    .peer\/denounce:checked ~ .peer-checked\/denounce\:text-red-800,
+    .text-red-400,
+    .text-red-500,
+    .text-red-600,
+    .text-red-700,
+    .text-red-800 {
+      color: var(--ctp-red) !important;
+    }
+    @media (min-width: 1024px) {
+      .lg\:bg-white {
+        background-color: var(--ctp-base) !important;
+      }
+    }
+    @media (min-width: 1024px) {
+      .lg\:text-black {
+        color: var(--ctp-text) !important;
+      }
+    }
+    @media (min-width: 768px) {
+      .md\:bg-gray-50 {
+        background-color: var(--ctp-mantle) !important;
+      }
+    }
+    @media (min-width: 768px) {
+      .md\:border-gray-200,
+      .md\:border-gray-300 {
+        border-color: var(--ctp-surface0) !important;
+      }
+    }
+    .outline-gray-200 {
+      outline-color: var(--ctp-surface0) !important;
+    }
+    .peer\/denounce:checked ~ .peer-checked\/denounce\:ring-red-400 {
+      --tw-ring-color: var(--ctp-red) !important;
+    }
+    .peer\/vouch:checked ~ .peer-checked\/vouch\:ring-green-400 {
+      --tw-ring-color: var(--ctp-green) !important;
+    }
+    .stroke-gray-200 {
+      stroke: var(--ctp-overlay2) !important;
+    }
+    .stroke-gray-600 {
+      stroke: var(--ctp-subtext1) !important;
+    }
+    .stroke-green-600 {
+      stroke: var(--ctp-green) !important;
+    }
+    .stroke-orange-600 {
+      stroke: var(--ctp-peach) !important;
+    }
+    .stroke-red-600 {
+      stroke: var(--ctp-red) !important;
+    }
+    .stroke-yellow-600 {
+      stroke: var(--ctp-yellow) !important;
+    }
+    .target\:bg-yellow-200\/50:target {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 50%, transparent) !important;
+    }
+    .text-orange-600\/75 {
+      color: color-mix(in srgb, var(--ctp-peach) 75%, transparent) !important;
+    }
+  }
 
-    // start: ci status icons
-    // success
+  #legacy-dark() {
+    .dark\:backdrop\:bg-gray-800\/50::backdrop,
+    .dark\:bg-gray-800\/50,
+    .dark\:hover\:bg-gray-800\/50:hover {
+      background-color: color-mix(in srgb, var(--ctp-base) 50%, transparent) !important;
+    }
+    .dark\:before\:text-gray-600::before,
+    .dark\:placeholder-gray-600::placeholder,
+    .dark\:text-gray-600,
+    .dark\:text-gray-700,
+    .dark\:text-gray-900 {
+      color: var(--ctp-overlay2) !important;
+    }
+    .dark\:bg-amber-500\/20,
+    .dark\:bg-amber-900\/20 {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 20%, transparent) !important;
+    }
+    .dark\:bg-amber-900,
+    .dark\:bg-yellow-600,
+    .dark\:bg-yellow-900,
+    .peer:target ~ .dark\:peer-target\:bg-yellow-900 {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 25%, transparent) !important;
+    }
+    .dark\:bg-amber-900\/50,
+    .target\:dark\:bg-yellow-700\/50:target {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 50%, transparent) !important;
+    }
+    .dark\:bg-blue-600,
+    .dark\:bg-blue-900,
+    .dark\:bg-blue-950 {
+      background-color: color-mix(in srgb, var(--ctp-blue) 25%, transparent) !important;
+    }
+    .dark\:bg-blue-900\/10 {
+      background-color: color-mix(in srgb, var(--ctp-blue) 10%, transparent) !important;
+    }
+    .dark\:bg-blue-900\/30 {
+      background-color: color-mix(in srgb, var(--ctp-blue) 30%, transparent) !important;
+    }
+    .dark\:bg-blue-900\/50 {
+      background-color: color-mix(in srgb, var(--ctp-blue) 50%, transparent) !important;
+    }
+    .dark\:bg-gray-100,
+    .dark\:checked\:bg-gray-100:checked,
+    .dark\:indeterminate\:bg-gray-100:indeterminate {
+      background-color: var(--ctp-subtext0) !important;
+    }
+    .dark\:bg-gray-100\/10 {
+      background-color: color-mix(in srgb, var(--ctp-subtext0) 10%, transparent) !important;
+    }
+    .dark\:bg-gray-500,
+    .dark\:disabled\:checked\:bg-gray-500:disabled:checked,
+    .group\/summary:hover .dark\:group-hover\/summary\:bg-gray-500 {
+      background-color: var(--ctp-surface2) !important;
+    }
+    .dark\:bg-gray-600,
+    .dark\:hover\:bg-gray-600:hover,
+    .dark\:hover\:file\:bg-gray-600:hover::file-selector-button,
+    .file\:hover\:dark\:bg-gray-600:hover::file-selector-button {
+      background-color: var(--ctp-surface1) !important;
+    }
+    .dark\:bg-gray-700,
+    .dark\:disabled\:bg-gray-700:disabled,
+    .dark\:disabled\:indeterminate\:bg-gray-700:disabled:indeterminate,
+    .dark\:file\:bg-gray-700::file-selector-button,
+    .group\/comments[open] .dark\:group-open\/comments\:bg-gray-700,
+    .dark\:hover\:bg-gray-700:hover,
+    .peer\/none:checked ~ .dark\:peer-checked\/none\:bg-gray-700,
+    .file\:dark\:bg-gray-700::file-selector-button,
+    .peer\/basic:checked ~ .peer-checked\/basic\:dark\:bg-gray-700,
+    .peer\/kv:checked ~ .peer-checked\/kv\:dark\:bg-gray-700 {
+      background-color: var(--ctp-surface0) !important;
+    }
+    .dark\:bg-gray-700\/30 {
+      background-color: color-mix(in srgb, var(--ctp-surface0) 30%, transparent) !important;
+    }
+    .dark\:bg-gray-700\/50,
+    .dark\:hover\:bg-gray-700\/50:hover,
+    .hover\:dark\:bg-gray-700\/50:hover {
+      background-color: color-mix(in srgb, var(--ctp-surface0) 50%, transparent) !important;
+    }
+    .dark\:bg-gray-800,
+    .dark\:disabled\:hover\:bg-gray-800:disabled:hover,
+    .dark\:hover\:bg-gray-800:hover {
+      background-color: var(--ctp-base) !important;
+    }
+    .dark\:bg-gray-800\/30 {
+      background-color: color-mix(in srgb, var(--ctp-base) 30%, transparent) !important;
+    }
+    .dark\:bg-gray-900,
+    .dark\:bg-slate-900 {
+      background-color: var(--ctp-mantle) !important;
+    }
+    .dark\:bg-gray-900\/30 {
+      background-color: color-mix(in srgb, var(--ctp-mantle) 30%, transparent) !important;
+    }
+    .dark\:bg-gray-900\/50 {
+      background-color: color-mix(in srgb, var(--ctp-mantle) 50%, transparent) !important;
+    }
+    .dark\:bg-green-600,
+    .dark\:bg-green-700,
+    .dark\:bg-green-800,
+    .dark\:bg-green-900,
+    .dark\:bg-green-950,
+    .dark\:disabled\:bg-green-600:disabled,
+    .dark\:hover\:bg-green-800:hover,
+    .peer\/vouch:checked ~ .dark\:peer-checked\/vouch\:bg-green-700 {
+      background-color: color-mix(in srgb, var(--ctp-green) 25%, transparent) !important;
+    }
+    .dark\:bg-green-800\/30,
+    .dark\:bg-green-900\/30 {
+      background-color: color-mix(in srgb, var(--ctp-green) 30%, transparent) !important;
+    }
+    .dark\:bg-green-800\/50,
+    .dark\:bg-green-900\/50 {
+      background-color: color-mix(in srgb, var(--ctp-green) 50%, transparent) !important;
+    }
+    .dark\:bg-green-900\/20 {
+      background-color: color-mix(in srgb, var(--ctp-green) 20%, transparent) !important;
+    }
+    .dark\:bg-indigo-500,
+    .dark\:bg-indigo-900,
+    .dark\:bg-purple-700,
+    .dark\:bg-purple-900,
+    .dark\:disabled\:bg-indigo-400:disabled,
+    .dark\:hover\:bg-indigo-600:hover {
+      background-color: color-mix(in srgb, var(--ctp-mauve) 25%, transparent) !important;
+    }
+    .dark\:bg-indigo-950\/20 {
+      background-color: color-mix(in srgb, var(--ctp-mauve) 20%, transparent) !important;
+    }
+    .dark\:bg-orange-900\/30 {
+      background-color: color-mix(in srgb, var(--ctp-peach) 30%, transparent) !important;
+    }
+    .dark\:bg-red-700,
+    .dark\:bg-red-800,
+    .dark\:bg-red-900,
+    .dark\:disabled\:bg-red-600:disabled,
+    .dark\:hover\:bg-red-800:hover,
+    .peer\/denounce:checked ~ .dark\:peer-checked\/denounce\:bg-red-700 {
+      background-color: color-mix(in srgb, var(--ctp-red) 25%, transparent) !important;
+    }
+    .dark\:bg-red-800\/30,
+    .dark\:bg-red-900\/30 {
+      background-color: color-mix(in srgb, var(--ctp-red) 30%, transparent) !important;
+    }
+    .dark\:bg-red-800\/50 {
+      background-color: color-mix(in srgb, var(--ctp-red) 50%, transparent) !important;
+    }
+    .dark\:bg-red-900\/20,
+    .dark\:bg-red-950\/20,
+    .dark\:hover\:bg-red-700\/20:hover {
+      background-color: color-mix(in srgb, var(--ctp-red) 20%, transparent) !important;
+    }
+    .dark\:bg-slate-400,
+    .group:hover .group-hover\:dark\:bg-gray-400 {
+      background-color: var(--ctp-overlay0) !important;
+    }
+    .dark\:bg-yellow-600\/30,
+    .group\/line:target .group-target\/line\:dark\:bg-yellow-600\/30,
+    .target\:dark\:bg-yellow-700\/30:target {
+      background-color: color-mix(in srgb, var(--ctp-yellow) 30%, transparent) !important;
+    }
+    .dark\:border-amber-500,
+    .dark\:border-amber-600,
+    .dark\:border-amber-700,
+    .dark\:border-amber-800,
+    .dark\:border-yellow-500 {
+      border-color: var(--ctp-yellow) !important;
+    }
+    .dark\:border-blue-500,
+    .dark\:border-blue-900 {
+      border-color: var(--ctp-blue) !important;
+    }
+    .dark\:border-gray-400,
+    .dark\:border-gray-500,
+    .dark\:border-gray-600,
+    .dark\:checked\:border-gray-400:checked,
+    .dark\:disabled\:border-gray-500:disabled,
+    .dark\:disabled\:border-gray-600:disabled,
+    .dark\:disabled\:checked\:border-gray-500:disabled:checked,
+    .dark\:disabled\:indeterminate\:border-gray-600:disabled:indeterminate,
+    .dark\:divide-gray-600 > :not([hidden]) ~ :not([hidden]),
+    .dark\:hover\:border-gray-500:hover,
+    .dark\:hover\:border-gray-600:hover {
+      border-color: var(--ctp-surface1) !important;
+    }
+    .dark\:border-gray-700,
+    .dark\:border-gray-800,
+    .dark\:border-gray-900,
+    .dark\:divide-gray-700 > :not([hidden]) ~ :not([hidden]),
+    .dark\:divide-gray-900 > :not([hidden]) ~ :not([hidden]),
+    .dark\:hover\:border-gray-100:hover {
+      border-color: var(--ctp-surface0) !important;
+    }
+    .dark\:border-green-400\/25 {
+      border-color: color-mix(in srgb, var(--ctp-green) 25%, transparent) !important;
+    }
+    .dark\:border-green-500,
+    .dark\:border-green-600,
+    .dark\:border-green-700,
+    .dark\:border-green-800 {
+      border-color: var(--ctp-green) !important;
+    }
+    .dark\:border-indigo-600,
+    .dark\:border-purple-500,
+    .dark\:hover\:border-indigo-700:hover {
+      border-color: var(--ctp-mauve) !important;
+    }
+    .dark\:border-orange-700 {
+      border-color: var(--ctp-peach) !important;
+    }
+    .dark\:border-red-400\/25 {
+      border-color: color-mix(in srgb, var(--ctp-red) 25%, transparent) !important;
+    }
+    .dark\:border-red-500,
+    .dark\:border-red-600,
+    .dark\:border-red-700,
+    .dark\:border-red-800 {
+      border-color: var(--ctp-red) !important;
+    }
+    .dark\:border-red-900\/60 {
+      border-color: color-mix(in srgb, var(--ctp-red) 60%, transparent) !important;
+    }
+    .dark\:checked\:hover\:bg-gray-200:checked:hover {
+      background-color: var(--ctp-overlay2) !important;
+    }
+    .dark\:file\:text-gray-300::file-selector-button,
+    .group\/summary:hover .dark\:group-hover\/summary\:text-gray-300,
+    .dark\:hover\:text-gray-300:hover,
+    .dark\:hover\:text-gray-400:hover,
+    .dark\:placeholder-gray-400::placeholder,
+    .dark\:text-gray-300,
+    .dark\:text-gray-400,
+    .file\:dark\:text-gray-300::file-selector-button,
+    .hover\:dark\:text-gray-400:hover {
+      color: var(--ctp-subtext1) !important;
+    }
+    .dark\:focus-visible\:outline-gray-600:focus-visible {
+      outline-color: var(--ctp-surface1) !important;
+    }
+    .dark\:focus-within\:before\:ring-gray-600:focus-within::before,
+    .dark\:focus\:ring-gray-500:focus,
+    .peer\/none:checked ~ .dark\:peer-checked\/none\:ring-gray-600 {
+      --tw-ring-color: var(--ctp-surface1) !important;
+    }
+    .dark\:focus-within\:bg-gray-800\/80:focus-within,
+    .dark\:hover\:bg-gray-800\/80:hover {
+      background-color: color-mix(in srgb, var(--ctp-base) 80%, transparent) !important;
+    }
+    .dark\:hover\:bg-gray-700\/40:hover {
+      background-color: color-mix(in srgb, var(--ctp-surface0) 40%, transparent) !important;
+    }
+    .dark\:hover\:bg-white\/5:hover {
+      background-color: color-mix(in srgb, var(--ctp-base) 5%, transparent) !important;
+    }
+    .dark\:hover\:text-amber-300:hover,
+    .dark\:text-amber-300,
+    .dark\:text-amber-400,
+    .dark\:text-amber-50,
+    .dark\:text-amber-500,
+    .dark\:text-yellow-200,
+    .dark\:text-yellow-300,
+    .dark\:text-yellow-400,
+    .dark\:text-yellow-500,
+    .dark\:text-yellow-600 {
+      color: var(--ctp-yellow) !important;
+    }
+    .dark\:hover\:text-blue-300:hover,
+    .dark\:text-blue-200,
+    .dark\:text-blue-300,
+    .dark\:text-blue-400,
+    .dark\:text-blue-500 {
+      color: var(--ctp-blue) !important;
+    }
+    .dark\:hover\:text-gray-100:hover,
+    .dark\:hover\:text-gray-200:hover,
+    .dark\:hover\:text-white:hover,
+    .peer\/none:checked ~ .dark\:peer-checked\/none\:text-gray-200,
+    .dark\:text-gray-100,
+    .dark\:text-gray-200,
+    .dark\:text-white,
+    .group\/line:target .group-target\/line\:dark\:text-white {
+      color: var(--ctp-text) !important;
+    }
+    .dark\:hover\:text-green-300:hover,
+    .dark\:hover\:text-green-400:hover,
+    .peer\/vouch:checked ~ .dark\:peer-checked\/vouch\:text-green-200,
+    .dark\:text-green-100,
+    .dark\:text-green-200,
+    .dark\:text-green-300,
+    .dark\:text-green-400,
     .dark\:text-green-500 {
-      color: @green;
+      color: var(--ctp-green) !important;
+    }
+    .dark\:hover\:text-indigo-100:hover,
+    .dark\:text-indigo-100,
+    .dark\:text-indigo-200,
+    .dark\:text-indigo-300,
+    .dark\:text-indigo-500,
+    .dark\:text-purple-300,
+    .dark\:text-purple-400,
+    .dark\:text-purple-500 {
+      color: var(--ctp-mauve) !important;
+    }
+    .dark\:hover\:text-orange-100:hover,
+    .dark\:text-orange-100,
+    .dark\:text-orange-300,
+    .dark\:text-orange-400,
+    .dark\:text-orange-500 {
+      color: var(--ctp-peach) !important;
+    }
+    .dark\:hover\:text-red-300:hover,
+    .dark\:hover\:text-red-400:hover,
+    .peer\/denounce:checked ~ .dark\:peer-checked\/denounce\:text-red-200,
+    .dark\:text-red-200,
+    .dark\:text-red-300,
+    .dark\:text-red-400,
+    .dark\:text-red-500,
+    .hover\:dark\:text-red-300:hover {
+      color: var(--ctp-red) !important;
+    }
+    @media (min-width: 768px) {
+      .dark\:md\:border-gray-700 {
+        border-color: var(--ctp-surface0) !important;
+      }
+    }
+    .dark\:outline-gray-700 {
+      outline-color: var(--ctp-surface0) !important;
+    }
+    .peer\/denounce:checked ~ .dark\:peer-checked\/denounce\:ring-red-600 {
+      --tw-ring-color: var(--ctp-red) !important;
+    }
+    .peer\/vouch:checked ~ .dark\:peer-checked\/vouch\:ring-green-600 {
+      --tw-ring-color: var(--ctp-green) !important;
+    }
+    .dark\:ring-gray-700 {
+      --tw-ring-color: var(--ctp-surface0) !important;
+    }
+    .dark\:stroke-gray-500 {
+      stroke: var(--ctp-subtext0) !important;
+    }
+    .dark\:stroke-gray-700 {
+      stroke: var(--ctp-overlay2) !important;
     }
     .dark\:stroke-green-500 {
-      stroke: @green;
+      stroke: var(--ctp-green) !important;
     }
-    // in-progress
-    .dark\:stroke-yellow-500 {
-      stroke: @yellow;
-    }
-    // timeout
-    .text-orange-500 {
-      color: @peach;
-    }
-    // failed
-    .dark\:text-red-500 {
-      color: @red;
+    .dark\:stroke-orange-500 {
+      stroke: var(--ctp-peach) !important;
     }
     .dark\:stroke-red-500 {
-      stroke: @red;
+      stroke: var(--ctp-red) !important;
     }
-    // end: ci status icons
-
-    // start: diff view
-    // 50% was a little too hard to see imo
-    .dark\:bg-red-800\/50 {
-      background-color: fade(@red, 40%);
+    .dark\:stroke-yellow-500 {
+      stroke: var(--ctp-yellow) !important;
     }
-    .dark\:bg-green-800\/50 {
-      background-color: fade(@green, 40%);
+    .dark\:text-gray-500 {
+      color: var(--ctp-subtext0) !important;
     }
-
-    .dark\:bg-red-800\/30 {
-      background-color: fade(@red, 15%);
+    .dark\:text-orange-100\/75 {
+      color: color-mix(in srgb, var(--ctp-peach) 75%, transparent) !important;
     }
-    .dark\:bg-green-800\/30 {
-      background-color: fade(@green, 15%);
+    .group:hover .group-hover\:dark\:bg-gray-700\/25,
+    .hover\:dark\:bg-gray-700\/25:hover {
+      background-color: color-mix(in srgb, var(--ctp-surface0) 25%, transparent) !important;
     }
-    // end: diff view
-
-    :is(select, input, textarea, .btn, .btn-group-item.active) {
-      color: @text;
-      background-color: @base;
-      border-color: @crust;
-    }
-
-    input::placeholder {
-      color: @accent;
-    }
-
-    .btn-group-item {
-      color: @text;
-      background-color: @mantle;
-      border-color: @crust;
-    }
-
-    .btn-create {
-      color: @mantle;
-      background-color: @accent;
-      border-color: @accent;
-    }
-
-    // links, both bare and masked
-    .prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-      color: @accent;
-    }
-
-    // checkboxes
-    input[type="checkbox"] {
-      background-color: @surface0 !important;
-    }
-    input[type="checkbox"]:checked {
-      background-color: @overlay0 !important;
-    }
-
-    // blockquotes
-    .prose
-      :where(blockquote):not(
-        :where([class~="not-prose"], [class~="not-prose"] *)
-      ) {
-      color: @subtext1;
-      border-inline-start-color: @surface0;
-    }
-
-    // start: alerts
-    details[data-callout="note" i] {
-      border-color: @blue;
-      > summary {
-        color: @blue;
+    @media (min-width: 1024px) {
+      .lg\:dark\:bg-gray-800 {
+        background-color: var(--ctp-base) !important;
       }
     }
-    details[data-callout="tip" i] {
-      border-color: @green;
-      > summary {
-        color: @green;
+    @media (min-width: 1024px) {
+      .lg\:dark\:text-white {
+        color: var(--ctp-text) !important;
       }
     }
-    details[data-callout="important" i] {
-      border-color: @mauve;
-      > summary {
-        color: @mauve;
+    @media (min-width: 768px) {
+      .md\:dark\:bg-gray-700 {
+        background-color: var(--ctp-surface0) !important;
       }
     }
-    details[data-callout="warning" i] {
-      border-color: @yellow;
-      > summary {
-        color: @yellow;
+    @media (min-width: 768px) {
+      .md\:dark\:border-gray-600 {
+        border-color: var(--ctp-surface1) !important;
       }
     }
-    details[data-callout="caution" i] {
-      border-color: @red;
-      > summary {
-        color: @red;
-      }
-    }
-    // end: alerts
+  }
 
-    // inline code / background color for text within codeblocks
-    // make sure background-color here is the same as the below .prose selector's background-color,
-    // or the code text will have a different background color than the fenced codeblocks
-    code {
-      color: @text;
-      background-color: @crust;
-    }
+  :root {
+    background-color: var(--ctp-base) !important;
+    color: var(--ctp-text) !important;
+    scrollbar-color: var(--ctp-surface2) var(--ctp-mantle);
+  }
+  body {
+    background-color: var(--ctp-mantle) !important;
+    color: var(--ctp-text) !important;
+  }
+  ::selection {
+    background-color: color-mix(in srgb, var(--ctp-accent) 30%, transparent) !important;
+    color: var(--ctp-text) !important;
+  }
+  a,
+  label {
+    color: var(--ctp-text);
+  }
+  a:hover {
+    color: var(--ctp-accent);
+  }
+  :is(input, textarea, select) {
+    color: var(--ctp-text) !important;
+    background-color: var(--ctp-base) !important;
+    border-color: var(--ctp-surface1) !important;
+    accent-color: var(--ctp-accent);
+  }
+  :is(input, textarea)::placeholder {
+    color: var(--ctp-overlay2) !important;
+  }
+  :is(input, textarea, select, button, a):focus-visible {
+    outline-color: var(--ctp-accent) !important;
+    --tw-ring-color: var(--ctp-accent) !important;
+  }
+  :is(input[type="checkbox"], input[type="radio"]):is(:checked, :indeterminate) {
+    background-color: var(--ctp-accent) !important;
+    border-color: var(--ctp-accent) !important;
+    background-image: none !important;
+  }
+  input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M10 3 4.5 8.5 2 6' fill='none' stroke='%2311111b' stroke-width='1.5'/%3E%3C/svg%3E") !important;
+  }
+  input[type="checkbox"]:indeterminate {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6h7' stroke='%2311111b' stroke-width='1.5'/%3E%3C/svg%3E") !important;
+  }
+  input[type="radio"]:checked {
+    box-shadow: inset 0 0 0 3px var(--ctp-base);
+  }
+  :is(input, textarea, select):disabled {
+    opacity: 0.6;
+  }
 
-    // fenced codeblocks with no syntax highlighting set
-    .prose
-      :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-      background-color: @crust;
-    }
+  :is(.btn, .btn-group, .btn-group-item) {
+    color: var(--ctp-text) !important;
+    background-color: var(--ctp-base) !important;
+    border-color: var(--ctp-surface0) !important;
+  }
+  :is(.btn, .btn-group-item):hover,
+  .btn-group-item.active,
+  .btn-flat:hover {
+    background-color: var(--ctp-surface0) !important;
+  }
+  .btn-flat {
+    color: var(--ctp-text) !important;
+  }
+  :is(.btn, .btn-group-item)::before {
+    box-shadow: inset 0 -2px 0 var(--ctp-surface0) !important;
+  }
+  :is(.btn-create, .btn-create-flat, .btn-primary) {
+    color: var(--ctp-base) !important;
+    background-color: var(--ctp-accent) !important;
+    border-color: var(--ctp-accent) !important;
+  }
+  :is(.btn-cancel, .btn-cancel-flat) {
+    color: var(--ctp-base) !important;
+    background-color: var(--ctp-red) !important;
+    border-color: var(--ctp-red) !important;
+  }
+  :is(.btn-create, .btn-create-flat, .btn-primary, .btn-cancel, .btn-cancel-flat):hover {
+    filter: brightness(0.95);
+  }
+  :is(.btn-create, .btn-create-flat, .btn-primary):hover {
+    background-color: var(--ctp-accent) !important;
+  }
+  :is(.btn-cancel, .btn-cancel-flat):hover {
+    background-color: var(--ctp-red) !important;
+  }
+  :is(.btn-create-flat, .btn-cancel-flat)::before {
+    box-shadow: none !important;
+  }
+  .error {
+    color: var(--ctp-red) !important;
+  }
 
-    // start: syntax highlighting
-    .chroma {
-      color: @text;
-      background-color: @crust;
+  .prose,
+  .markup {
+    color: var(--ctp-text) !important;
+    --tw-prose-body: var(--ctp-text);
+    --tw-prose-headings: var(--ctp-text);
+    --tw-prose-lead: var(--ctp-subtext1);
+    --tw-prose-links: var(--ctp-accent);
+    --tw-prose-bold: var(--ctp-text);
+    --tw-prose-counters: var(--ctp-subtext0);
+    --tw-prose-bullets: var(--ctp-overlay2);
+    --tw-prose-hr: var(--ctp-surface0);
+    --tw-prose-quotes: var(--ctp-subtext1);
+    --tw-prose-quote-borders: var(--ctp-surface1);
+    --tw-prose-code: var(--ctp-text);
+    --tw-prose-pre-code: var(--ctp-text);
+    --tw-prose-pre-bg: var(--ctp-crust);
+    --tw-prose-th-borders: var(--ctp-surface1);
+    --tw-prose-td-borders: var(--ctp-surface0);
+  }
+  :is(.prose, .markup) :is(h1, h2, h3, h4, h5, h6, strong, th) {
+    color: var(--ctp-text) !important;
+  }
+  :is(.prose, .markup) a {
+    color: var(--ctp-accent) !important;
+  }
+  :is(.prose, .markup) :is(hr, th, td, h1, h2) {
+    border-color: var(--ctp-surface0) !important;
+  }
+  :is(.prose, .markup) blockquote {
+    color: var(--ctp-subtext1) !important;
+    border-color: var(--ctp-surface1) !important;
+  }
+  code,
+  :is(.prose, .markup) pre {
+    color: var(--ctp-text);
+    background-color: var(--ctp-crust) !important;
+  }
+  pre code {
+    background-color: transparent !important;
+  }
+  .bg,
+  .chroma {
+    color: var(--ctp-text) !important;
+    background-color: var(--ctp-crust) !important;
+  }
+  .chroma :is(.ln, .lnt, .lnlinks) {
+    color: var(--ctp-overlay2) !important;
+  }
+  .chroma .hl {
+    background-color: var(--ctp-surface0) !important;
+  }
+  .chroma :is(.c, .ch, .cm, .c1, .cs, .cp, .cpf) {
+    color: var(--ctp-overlay2) !important;
+  }
+  .chroma :is(.k, .kc, .kd, .kn, .kp, .kr, .kt) {
+    color: var(--ctp-mauve) !important;
+  }
+  .chroma :is(.s, .sa, .sb, .sc, .dl, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss) {
+    color: var(--ctp-green) !important;
+  }
+  .chroma :is(.nf, .fm, .nb, .bp) {
+    color: var(--ctp-blue) !important;
+  }
+  .chroma :is(.m, .mb, .mf, .mh, .mi, .il, .mo, .nc, .no) {
+    color: var(--ctp-peach) !important;
+  }
+  .chroma :is(.na, .nv, .vc, .vg, .vi, .vm) {
+    color: var(--ctp-lavender) !important;
+  }
+  .chroma :is(.n, .nx, .p, .w) {
+    color: var(--ctp-text) !important;
+  }
+  .chroma :is(.o, .ow, .nt) {
+    color: var(--ctp-sky) !important;
+  }
+  .chroma :is(.err, .gr, .gt, .gd) {
+    color: var(--ctp-red) !important;
+  }
+  .chroma .gd {
+    background-color: var(--color-background-danger-subtle) !important;
+  }
+  .chroma .gi {
+    color: var(--ctp-green) !important;
+    background-color: var(--color-background-success-subtle) !important;
+  }
+
+  // Inherited variables reach Pierre's shadow DOM; internal selectors cannot.
+  diffs-container {
+    --diffs-editor-selection-bg: color-mix(in srgb, var(--ctp-accent) 30%, transparent) !important;
+  }
+  details[data-callout="note" i],
+  .markup .markdown-alert-note {
+    border-color: var(--ctp-blue) !important;
+  }
+  details[data-callout="note" i] > summary,
+  .markup .markdown-alert-note .markdown-alert-title {
+    color: var(--ctp-blue) !important;
+  }
+  details[data-callout="tip" i],
+  .markup .markdown-alert-tip {
+    border-color: var(--ctp-green) !important;
+  }
+  details[data-callout="tip" i] > summary,
+  .markup .markdown-alert-tip .markdown-alert-title {
+    color: var(--ctp-green) !important;
+  }
+  details[data-callout="important" i],
+  .markup .markdown-alert-important {
+    border-color: var(--ctp-mauve) !important;
+  }
+  details[data-callout="important" i] > summary,
+  .markup .markdown-alert-important .markdown-alert-title {
+    color: var(--ctp-mauve) !important;
+  }
+  details[data-callout="warning" i],
+  .markup .markdown-alert-warning {
+    border-color: var(--ctp-yellow) !important;
+  }
+  details[data-callout="warning" i] > summary,
+  .markup .markdown-alert-warning .markdown-alert-title {
+    color: var(--ctp-yellow) !important;
+  }
+  details[data-callout="caution" i],
+  .markup .markdown-alert-caution {
+    border-color: var(--ctp-red) !important;
+  }
+  details[data-callout="caution" i] > summary,
+  .markup .markdown-alert-caution .markdown-alert-title {
+    color: var(--ctp-red) !important;
+  }
+  each(black red green yellow blue magenta cyan white bright-black bright-red bright-green bright-yellow bright-blue bright-magenta bright-cyan bright-white, {
+    @foreground: if((@index <= 8), (29 + @index), (81 + @index));
+    @background: @foreground + 10;
+    .term-fg@{foreground} {
+      color: var(~"--color-ansi-@{value}") !important;
     }
-    :is(.c, .c1, .cm) {
-      color: fade(@mauve, 55%);
-      font-style: italic;
+    .term-bg@{background} {
+      background-color: var(~"--color-ansi-@{value}") !important;
     }
-    :is(.k, .kc, .kd, .kn, .kp, .kr, .nb) {
-      color: @mauve;
-    }
-    :is(.s, .s1, .s2) {
-      color: @green;
-    }
-    :is(.nv, .nf, .nx) {
-      color: @blue;
-    }
-    :is(.o, .p) {
-      color: @text;
-    }
-    :is(.cl, .n, .err) {
-      color: @peach;
-    }
-    .no {
-      color: @yellow;
-    }
-    .kt {
-      color: @red;
-    }
-    // line selections
-    .hl {
-      background-color: fade(@surface0, 40%);
-    }
-    // end: syntax highlighting
+  });
+
+  :root
+    .group\/collapse:has(.collapse-trigger:hover)
+    .group-has-\[\.collapse-trigger\:hover\]\/collapse\:bg-gray-400,
+  :root
+    .group\/collapse:has(.collapse-trigger:hover)
+    .dark\:group-has-\[\.collapse-trigger\:hover\]\/collapse\:bg-gray-500 {
+    background-color: var(--ctp-surface2) !important;
+  }
+  :root
+    .group\/collapse:has(.collapse-trigger:hover)
+    .group-has-\[\.collapse-trigger\:hover\]\/collapse\:text-gray-600,
+  :root
+    .group\/collapse:has(.collapse-trigger:hover)
+    .dark\:group-has-\[\.collapse-trigger\:hover\]\/collapse\:text-gray-300 {
+    color: var(--ctp-subtext1) !important;
   }
 }
