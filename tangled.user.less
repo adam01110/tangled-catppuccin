@@ -687,6 +687,10 @@
     .dark\:hover\:bg-gray-800:hover {
       background-color: var(--ctp-base) !important;
     }
+    .dark\:bg-gray-800\/50,
+    .dark\:hover\:bg-gray-800\/50:hover {
+      background-color: color-mix(in srgb, var(--ctp-base) 50%, transparent) !important;
+    }
     .dark\:bg-gray-800\/30 {
       background-color: color-mix(in srgb, var(--ctp-base) 30%, transparent) !important;
     }
@@ -1061,6 +1065,15 @@
     color: var(--ctp-base) !important;
     background-color: var(--ctp-accent) !important;
     border-color: var(--ctp-accent) !important;
+  }
+  // Primary Svelte actions use success tokens; keep status colors unchanged.
+  :is(a, button)[data-variant="primary"] {
+    --color-background-success-emphasis: var(--ctp-accent);
+    --color-background-success-emphasis-hover: var(--ctp-accent);
+    --color-border-success: var(--ctp-accent);
+  }
+  :is(a, button)[data-variant="primary"]:not(:disabled):not([aria-disabled="true"]) {
+    color: var(--ctp-base) !important;
   }
   :is(.btn-cancel, .btn-cancel-flat) {
     color: var(--ctp-base) !important;

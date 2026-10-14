@@ -27,8 +27,14 @@ const fixture = `
 <div class="bg-background-default text-foreground-default border-border-default" id="svelte">Svelte component</div>
 <div class="markup"><div class="markdown-alert-important" id="alert"><p class="markdown-alert-title" id="alert-title">Important</p></div></div>
 <span class="term-fg31" id="go-log">Error</span><span class="ansi-red-fg" id="sv-log">Error</span>
+<div id="search-shell" class="bg-gray-100/50 dark:bg-gray-800/50 focus-within:bg-gray-100 dark:focus-within:bg-gray-800/80"><input id="header-search" placeholder="Search..."></div>
+<a href="#" id="join" data-variant="primary" class="bg-background-success-emphasis text-foreground-on-emphasis border-border-success hover:bg-background-success-emphasis-hover">Join now</a>
+<button id="join-disabled" disabled data-variant="primary" class="disabled:text-foreground-success-disabled">Join now</button>
+<div id="success-status" class="bg-background-success-emphasis">Success</div>
+<div class="btn-group"><button id="star-action" class="btn-group-item active">Star</button><a id="star-count" class="btn-group-item" href="#">0</a></div>
 <diffs-container id="diff"></diffs-container>
 </main>`;
+const controls = await readFile(new URL("fixtures/controls.css", import.meta.url), "utf8");
 const upstream = await readFile(new URL("fixtures/svelte.css", import.meta.url), "utf8");
 const legacy = process.env.LEGACY_CSS_PATH
   ? await readFile(process.env.LEGACY_CSS_PATH, "utf8")
@@ -75,7 +81,7 @@ function rgb(hex: string) {
   return `rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ")})`;
 }
 async function mount(page: Page, css: string, siteTheme: "light" | "dark" | null) {
-  await page.setContent(`<html${siteTheme ? ` data-theme="${siteTheme}"` : ""}><head><style>${legacy}\n${upstream}
+  await page.setContent(`<html${siteTheme ? ` data-theme="${siteTheme}"` : ""}><head><style>${legacy}\n${upstream}\n${controls}
   body { font-family: "InterVariable", sans-serif; } .btn { background: white; color: black; }
   .chroma .nf { color: black; } .nf { font-weight: bold; }
   </style><style>${css}</style></head><body>${fixture}</body></html>`);
@@ -236,3 +242,45 @@ test("custom accent, font toggle, focus and hover are applied without activating
     await page.close();
   }
 });
+
+for (const flavor of flavors) {
+  test(`${flavor}: primary actions and unfocused search use theme colors`, async () => {
+    const page = await browser.newPage();
+    try {
+      const css = browserCSS(await compile({ light: flavor, dark: flavor, accent: "blue" }));
+      for (const siteTheme of ["light", "dark"] as const) {
+        await mount(page, css, siteTheme);
+        const p = palettes[flavor];
+        assert.equal(await style(page, "#join", "background-color"), rgb(p.blue));
+        assert.equal(await style(page, "#join", "color"), rgb(p.base));
+        assert.equal(await style(page, "#join", "border-color"), rgb(p.blue));
+        await page.locator("#join").hover();
+        assert.equal(await style(page, "#join", "background-color"), rgb(p.blue));
+        assert.equal(await style(page, "#join", "color"), rgb(p.base));
+        assert.equal(await style(page, "#success-status", "background-color"), rgb(p.green));
+        assert.notEqual(await style(page, "#join-disabled", "color"), rgb(p.base));
+        assert.notEqual(
+          await style(page, "#star-action", "background-color"),
+          await style(page, "#star-count", "background-color"),
+        );
+        const searchColor = () => style(page, "#search-shell", "background-color");
+        const base = await page.evaluate((color) => {
+          const probe = document.createElement("div");
+          probe.style.backgroundColor = `color-mix(in srgb, ${color} 50%, transparent)`;
+          document.body.append(probe);
+          const result = getComputedStyle(probe).backgroundColor;
+          probe.remove();
+          return result;
+        }, p.base);
+        if (siteTheme === "dark") assert.equal(await searchColor(), base);
+        const unfocused = await searchColor();
+        await page.locator("#header-search").focus();
+        assert.notEqual(await searchColor(), unfocused);
+        await page.locator("#header-search").blur();
+        assert.equal(await searchColor(), unfocused);
+      }
+    } finally {
+      await page.close();
+    }
+  });
+}

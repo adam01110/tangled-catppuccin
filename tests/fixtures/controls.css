@@ -1,0 +1,34 @@
+/* Representative rules from Tangled's Go and Svelte control cascades. */
+@layer utilities {
+  .bg-background-success-emphasis {
+    background-color: var(--color-background-success-emphasis);
+  }
+  .text-foreground-on-emphasis {
+    color: var(--color-foreground-on-emphasis);
+  }
+  .border-border-success {
+    border-color: var(--color-border-success);
+  }
+  .hover\:bg-background-success-emphasis-hover:hover {
+    background-color: var(--color-background-success-emphasis-hover);
+  }
+  .disabled\:text-foreground-success-disabled:disabled {
+    color: var(--color-foreground-success-disabled);
+  }
+}
+.dark\:bg-gray-800\/50:where([data-theme="dark"], [data-theme="dark"] *) {
+  background-color: rgb(31 41 55 / 50%);
+}
+.dark\:focus-within\:bg-gray-800\/80:focus-within:where(
+    [data-theme="dark"],
+    [data-theme="dark"] *
+  ) {
+  background-color: rgb(31 41 55 / 80%);
+}
+.btn-group-item.active {
+  background-color: #fff;
+}
+.btn-group-item.active::before {
+  content: "";
+  box-shadow: inset 0 -2px 0 #e5e7eb;
+}
