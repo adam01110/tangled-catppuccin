@@ -80,8 +80,13 @@ const palettes = {
 function rgb(hex: string) {
   return `rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ")})`;
 }
-async function mount(page: Page, css: string, siteTheme: "light" | "dark" | null) {
-  await page.setContent(`<html${siteTheme ? ` data-theme="${siteTheme}"` : ""}><head><style>${legacy}\n${upstream}\n${controls}
+async function mount(
+  page: Page,
+  css: string,
+  siteTheme: "light" | "dark" | null,
+  legacyCSS = legacy,
+) {
+  await page.setContent(`<html${siteTheme ? ` data-theme="${siteTheme}"` : ""}><head><style>${legacyCSS}\n${upstream}\n${controls}
   body { font-family: "InterVariable", sans-serif; } .btn { background: white; color: black; }
   .chroma .nf { color: black; } .nf { font-weight: bold; }
   </style><style>${css}</style></head><body>${fixture}</body></html>`);
@@ -249,7 +254,7 @@ for (const flavor of flavors) {
     try {
       const css = browserCSS(await compile({ light: flavor, dark: flavor, accent: "blue" }));
       for (const siteTheme of ["light", "dark"] as const) {
-        await mount(page, css, siteTheme);
+        await mount(page, css, siteTheme, "");
         const p = palettes[flavor];
         assert.equal(await style(page, "#join", "background-color"), rgb(p.blue));
         assert.equal(await style(page, "#join", "color"), rgb(p.base));
@@ -259,6 +264,7 @@ for (const flavor of flavors) {
         assert.equal(await style(page, "#join", "color"), rgb(p.base));
         assert.equal(await style(page, "#success-status", "background-color"), rgb(p.green));
         assert.notEqual(await style(page, "#join-disabled", "color"), rgb(p.base));
+        await mount(page, css, siteTheme);
         assert.notEqual(
           await style(page, "#star-action", "background-color"),
           await style(page, "#star-count", "background-color"),
