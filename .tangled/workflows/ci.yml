@@ -6,9 +6,5 @@ dependencies:
   nixpkgs:
     - nix
 steps:
-  - name: check flake and formatting
-    command: nix --extra-experimental-features "nix-command flakes" flake check
-  - name: install dependencies
-    command: nix --extra-experimental-features "nix-command flakes" develop -c bun install --frozen-lockfile
-  - name: integration check
-    command: nix --extra-experimental-features "nix-command flakes" develop -c bun run ci
+  - name: check formatting, lint, types, and tests
+    command: nix --extra-experimental-features "nix-command flakes" flake check --print-build-logs

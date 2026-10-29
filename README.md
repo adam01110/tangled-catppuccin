@@ -46,8 +46,9 @@ bun run ci
 ```
 
 Without Nix, install Bun and Chromium and set `CHROMIUM_PATH` if Chromium isn't
-on `PATH`. Run `nix fmt` to format the repository and `nix flake check` to check
-formatting.
+on `PATH`. Run `nix fmt` to format the repository. `nix flake check` checks
+formatting and runs `bun run ci` in a sandbox with pinned dependencies and
+Chromium. The Tangled pipeline runs this same flake check.
 
 The Bun checks cover formatting, lint, types, Less compilation, and browser
 rendering. Tests use local fixtures, so they don't need a running Tangled
