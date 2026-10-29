@@ -1,34 +1,140 @@
-/* Representative rules from Tangled's Go and Svelte control cascades. */
+/* Representative utilities from Button.svelte, Checkbox.svelte, and theme.css. */
 @layer utilities {
-  .bg-background-success-emphasis {
-    background-color: var(--color-background-success-emphasis);
+  .emphasis {
+    --btn-brand: var(--color-background-info-emphasis);
+    --btn-from: color-mix(in oklch, var(--btn-brand), white 15%);
+    --btn-highlight: color-mix(in oklch, var(--btn-brand), white 30%);
+    --btn-ring: color-mix(in oklch, var(--btn-brand), black 10%);
+    background-color: var(--btn-highlight);
+    background-image: linear-gradient(to bottom, var(--btn-from), var(--btn-brand));
+    color: white;
+    box-shadow: inset 0 2px 0 0 var(--btn-highlight);
   }
-  .text-foreground-on-emphasis {
-    color: var(--color-foreground-on-emphasis);
-  }
-  .border-border-success {
-    border-color: var(--color-border-success);
-  }
-  .hover\:bg-background-success-emphasis-hover:hover {
-    background-color: var(--color-background-success-emphasis-hover);
-  }
-  .disabled\:text-foreground-success-disabled:disabled {
-    color: var(--color-foreground-success-disabled);
-  }
+  .emphasis:hover { --btn-from: var(--btn-highlight); }
+  .emphasis[data-variant="destructive"] { --btn-brand: #b91c1c; }
+  input[type="checkbox"]:indeterminate + svg { display: none; }
+  input[type="checkbox"] ~ .minus { display: none; }
+  input[type="checkbox"]:indeterminate ~ .minus { display: block; }
+  input:is([type="checkbox"], [type="radio"]):disabled { background-color: var(--color-background-inset); }
+  input[type="radio"] { appearance: none; }
+  input[type="radio"] + span { display: none; background-color: var(--color-foreground-default); }
+  input[type="radio"]:checked + span { display: block; }
+  .input-field.error { background-color: var(--color-background-danger-subtle); }
+  .input-field.disabled { background-color: var(--color-background-inset); }
+
+  .emphasis:is(:disabled, [aria-disabled="true"]) { opacity: 0.5; pointer-events: none; }
+  .bg-background-subtle { background-color: var(--color-background-subtle); }
+  .bg-background-success-emphasis { background-color: var(--color-background-success-emphasis); }
+  .bg-background-success-subtle { background-color: var(--color-background-success-subtle); }
+  .bg-background-danger-subtle { background-color: var(--color-background-danger-subtle); }
+  .text-foreground-success { color: var(--color-foreground-success); }
+  .text-foreground-danger { color: var(--color-foreground-danger); }
+  .hover\:bg-background-muted:hover, .focus-within\:bg-background-muted:focus-within { background-color: var(--color-background-muted); }
+  input[type="checkbox"] { appearance: none; }
+  input[type="checkbox"] + svg { display: none; color: var(--color-background-default); }
+  input[type="checkbox"]:checked + svg { display: block; }
+  .input-field { background-color: var(--color-background-default); box-shadow: inset 0 0 0 1px var(--color-border-default); }
+  .input-field:focus-within { box-shadow: 0 0 0 1px var(--color-border-strong); }
 }
-.dark\:bg-gray-800\/50:where([data-theme="dark"], [data-theme="dark"] *) {
-  background-color: rgb(31 41 55 / 50%);
+.syntax-function { color: var(--color-syntax-function); }
+/* ansi_up's palette classes, mapped onto the terminal tokens in app.css.
+   only the 16 base colours get classes; 256-colour and truecolor sgr codes
+   come through as inline rgb, same as the appview's terminal-to-html. */
+
+.ansi-black-fg {
+	color: var(--color-ansi-black);
 }
-.dark\:focus-within\:bg-gray-800\/80:focus-within:where(
-    [data-theme="dark"],
-    [data-theme="dark"] *
-  ) {
-  background-color: rgb(31 41 55 / 80%);
+.ansi-red-fg {
+	color: var(--color-ansi-red);
 }
-.btn-group-item.active {
-  background-color: #fff;
+.ansi-green-fg {
+	color: var(--color-ansi-green);
 }
-.btn-group-item.active::before {
-  content: "";
-  box-shadow: inset 0 -2px 0 #e5e7eb;
+.ansi-yellow-fg {
+	color: var(--color-ansi-yellow);
+}
+.ansi-blue-fg {
+	color: var(--color-ansi-blue);
+}
+.ansi-magenta-fg {
+	color: var(--color-ansi-magenta);
+}
+.ansi-cyan-fg {
+	color: var(--color-ansi-cyan);
+}
+.ansi-white-fg {
+	color: var(--color-ansi-white);
+}
+.ansi-bright-black-fg {
+	color: var(--color-ansi-bright-black);
+}
+.ansi-bright-red-fg {
+	color: var(--color-ansi-bright-red);
+}
+.ansi-bright-green-fg {
+	color: var(--color-ansi-bright-green);
+}
+.ansi-bright-yellow-fg {
+	color: var(--color-ansi-bright-yellow);
+}
+.ansi-bright-blue-fg {
+	color: var(--color-ansi-bright-blue);
+}
+.ansi-bright-magenta-fg {
+	color: var(--color-ansi-bright-magenta);
+}
+.ansi-bright-cyan-fg {
+	color: var(--color-ansi-bright-cyan);
+}
+.ansi-bright-white-fg {
+	color: var(--color-ansi-bright-white);
+}
+
+.ansi-black-bg {
+	background-color: var(--color-ansi-black);
+}
+.ansi-red-bg {
+	background-color: var(--color-ansi-red);
+}
+.ansi-green-bg {
+	background-color: var(--color-ansi-green);
+}
+.ansi-yellow-bg {
+	background-color: var(--color-ansi-yellow);
+}
+.ansi-blue-bg {
+	background-color: var(--color-ansi-blue);
+}
+.ansi-magenta-bg {
+	background-color: var(--color-ansi-magenta);
+}
+.ansi-cyan-bg {
+	background-color: var(--color-ansi-cyan);
+}
+.ansi-white-bg {
+	background-color: var(--color-ansi-white);
+}
+.ansi-bright-black-bg {
+	background-color: var(--color-ansi-bright-black);
+}
+.ansi-bright-red-bg {
+	background-color: var(--color-ansi-bright-red);
+}
+.ansi-bright-green-bg {
+	background-color: var(--color-ansi-bright-green);
+}
+.ansi-bright-yellow-bg {
+	background-color: var(--color-ansi-bright-yellow);
+}
+.ansi-bright-blue-bg {
+	background-color: var(--color-ansi-bright-blue);
+}
+.ansi-bright-magenta-bg {
+	background-color: var(--color-ansi-bright-magenta);
+}
+.ansi-bright-cyan-bg {
+	background-color: var(--color-ansi-bright-cyan);
+}
+.ansi-bright-white-bg {
+	background-color: var(--color-ansi-bright-white);
 }

@@ -39,8 +39,7 @@ test("every audited Svelte semantic token is exported", async () => {
   const css = await compile();
   for (const token of tokens) assert.ok(css.includes(`${token}:`), token);
 });
-test("syntax selectors cannot leak into ordinary elements", async () => {
+test("retired appview selectors are not emitted", async () => {
   const css = await compile();
-  assert.match(css, /\.chroma :is\(\.c,/);
-  assert.doesNotMatch(css, /^:is\(\.c,/m);
+  assert.doesNotMatch(css, /\.chroma|\.btn-create|\.term-fg|\.bg-gray-|\.dark\\:/);
 });

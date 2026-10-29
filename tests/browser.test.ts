@@ -15,30 +15,32 @@ afterAll(async () => {
   await browser?.close();
 });
 const fixture = `
-<main class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700" id="panel">
+<main class="bg-background-default text-foreground-default border-border-default" id="panel">
 <h1>Repository</h1><a href="#">Link</a>
-<button class="btn btn-create" id="create">Create</button>
-<button class="btn" id="neutral">Action</button>
-<input id="input" placeholder="Search"><input type="checkbox" id="check" checked>
-<div id="add" class="bg-green-100 dark:bg-green-800/30 text-green-700 dark:text-green-400">+ added</div>
-<div id="delete" class="bg-red-100 dark:bg-red-800/30 text-red-700 dark:text-red-400">- removed</div>
-<div class="prose"><h2>Readme</h2><a id="prose-link" href="#">Documentation</a><pre><code><span class="chroma"><span class="nf" id="syntax">function</span></span></code></pre></div>
+<button data-variant="primary" class="emphasis" id="create">Create</button>
+<button class="bg-background-default text-foreground-default hover:bg-background-muted" id="neutral">Action</button>
+<input id="input" placeholder="Search"><span><input type="checkbox" id="check" checked><svg id="check-icon" aria-hidden="true"></svg></span>
+<div id="add" class="bg-background-success-subtle text-foreground-success">+ added</div>
+<div id="delete" class="bg-background-danger-subtle text-foreground-danger">- removed</div>
+<div class="markup"><h2>Readme</h2><a id="prose-link" href="#">Documentation</a><pre><code><span class="syntax-function" id="syntax">function</span></code></pre></div>
 <p class="nf" id="ordinary">Ordinary content</p>
-<div class="bg-background-default text-foreground-default border-border-default" id="svelte">Svelte component</div>
 <div class="markup"><div class="markdown-alert-important" id="alert"><p class="markdown-alert-title" id="alert-title">Important</p></div></div>
-<span class="term-fg31" id="go-log">Error</span><span class="ansi-red-fg" id="sv-log">Error</span>
-<div id="search-shell" class="bg-gray-100/50 dark:bg-gray-800/50 focus-within:bg-gray-100 dark:focus-within:bg-gray-800/80"><input id="header-search" placeholder="Search..."></div>
-<a href="#" id="join" data-variant="primary" class="bg-background-success-emphasis text-foreground-on-emphasis border-border-success hover:bg-background-success-emphasis-hover">Join now</a>
-<button id="join-disabled" disabled data-variant="primary" class="disabled:text-foreground-success-disabled">Join now</button>
+<span class="ansi-red-fg" id="sv-log">Error</span><span id="truecolor-log" style="color: rgb(12, 34, 56)">Custom log</span>
+<div id="search-shell" class="input-field"><input id="header-search" placeholder="Search..."></div>
+<a href="#" id="join" data-variant="primary" class="emphasis">Join now</a>
+<button id="join-disabled" disabled data-variant="primary" class="emphasis">Join now</button>
 <div id="success-status" class="bg-background-success-emphasis">Success</div>
-<div class="btn-group"><button id="star-action" class="btn-group-item active">Star</button><a id="star-count" class="btn-group-item" href="#">0</a></div>
+<button class="emphasis" data-variant="destructive" id="destructive">Delete</button>
+<a class="emphasis" data-variant="primary" aria-disabled="true" id="aria-disabled">Unavailable</a>
+<span><input type="checkbox" id="disabled-check" disabled checked></span>
+<span><input type="checkbox" id="mixed-check"><svg id="mixed-check-icon"></svg><svg class="minus" id="minus-icon"></svg></span>
+<span><input type="radio" id="radio" checked><span id="radio-dot"></span></span>
+<div class="input-field error" id="error-field"><input id="error-input"></div>
+<div class="input-field disabled" id="disabled-field"><input id="disabled-input" disabled></div>
 <diffs-container id="diff"></diffs-container>
 </main>`;
 const controls = await readFile(new URL("fixtures/controls.css", import.meta.url), "utf8");
 const upstream = await readFile(new URL("fixtures/svelte.css", import.meta.url), "utf8");
-const legacy = process.env.LEGACY_CSS_PATH
-  ? await readFile(process.env.LEGACY_CSS_PATH, "utf8")
-  : "";
 const palettes = {
   latte: {
     base: "#eff1f5",
@@ -80,15 +82,11 @@ const palettes = {
 function rgb(hex: string) {
   return `rgb(${[1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(", ")})`;
 }
-async function mount(
-  page: Page,
-  css: string,
-  siteTheme: "light" | "dark" | null,
-  legacyCSS = legacy,
-) {
-  await page.setContent(`<html${siteTheme ? ` data-theme="${siteTheme}"` : ""}><head><style>${legacyCSS}\n${upstream}\n${controls}
-  body { font-family: "InterVariable", sans-serif; } .btn { background: white; color: black; }
-  .chroma .nf { color: black; } .nf { font-weight: bold; }
+async function mount(page: Page, css: string, siteTheme: "light" | "dark" | null) {
+  await page.mouse.move(1000, 1000);
+  await page.setContent(`<html${siteTheme ? ` data-theme="${siteTheme}"` : ""}><head><style>${upstream}\n${controls}
+  body { font-family: "TimelessSans", sans-serif; }
+  input { color: inherit; background: transparent; } .nf { font-weight: bold; }
   </style><style>${css}</style></head><body>${fixture}</body></html>`);
   await page.evaluate(() => {
     document.querySelector("diffs-container")!.attachShadow({ mode: "open" }).innerHTML = `
@@ -116,13 +114,12 @@ for (const flavor of flavors) {
           assert.equal(await style(page, "body", "background-color"), rgb(p.mantle));
           assert.equal(await style(page, "#panel", "background-color"), rgb(p.base));
           assert.equal(await style(page, "#panel", "color"), rgb(p.text));
-          assert.equal(await style(page, "#svelte", "background-color"), rgb(p.base));
-          assert.equal(await style(page, "#svelte", "color"), rgb(p.text));
-          assert.equal(await style(page, "#create", "background-color"), rgb(p.mauve));
+          assert.equal(await style(page, "#create", "--btn-brand"), p.mauve);
+          assert.match(await style(page, "#create", "background-image"), /linear-gradient/);
           assert.equal(await style(page, "#create", "color"), rgb(p.base));
           assert.equal(await style(page, "#input", "color"), rgb(p.text));
           assert.equal(await style(page, "#check", "background-color"), rgb(p.mauve));
-          assert.notEqual(await style(page, "#check", "background-image"), "none");
+          assert.equal(await style(page, "#check", "background-image"), "none");
           assert.equal(await style(page, "#add", "color"), rgb(p.green));
           assert.equal(await style(page, "#delete", "color"), rgb(p.red));
           assert.notEqual(
@@ -133,7 +130,7 @@ for (const flavor of flavors) {
           assert.equal(await style(page, "#ordinary", "color"), rgb(p.text));
           assert.equal(await style(page, "#prose-link", "color"), rgb(p.mauve));
           assert.equal(await style(page, "#alert-title", "color"), rgb(p.mauve));
-          assert.equal(await style(page, "#go-log", "color"), rgb(p.red));
+          assert.equal(await style(page, "#truecolor-log", "color"), "rgb(12, 34, 56)");
           assert.equal(await style(page, "#sv-log", "color"), rgb(p.red));
           assert.equal(await style(page, "#diff span", "color"), rgb(p.blue));
           assert.equal(
@@ -147,7 +144,7 @@ for (const flavor of flavors) {
     }
   });
 }
-test("legacy ANSI classes use the semantic palette", async () => {
+test("ANSI classes use the semantic palette", async () => {
   const page = await browser.newPage();
   try {
     await mount(page, browserCSS(await compile()), "dark");
@@ -169,29 +166,25 @@ test("legacy ANSI classes use the semantic palette", async () => {
       "bright-cyan",
       "bright-white",
     ];
-    for (const [index, color] of colors.entries()) {
-      const foreground = index < 8 ? 30 + index : 82 + index;
-      const actual = await page.evaluate(
-        ({ foreground, color }) => {
-          const legacy = document.createElement("span");
-          legacy.className = `term-fg${foreground} term-bg${foreground + 10}`;
-          const semantic = document.createElement("span");
-          semantic.style.color = `var(--color-ansi-${color})`;
-          semantic.style.backgroundColor = `var(--color-ansi-${color})`;
-          document.body.append(legacy, semantic);
-          const legacyStyle = getComputedStyle(legacy);
-          const semanticStyle = getComputedStyle(semantic);
-          const result = {
-            foreground: legacyStyle.color,
-            background: legacyStyle.backgroundColor,
-            expected: semanticStyle.color,
-          };
-          legacy.remove();
-          semantic.remove();
-          return result;
-        },
-        { foreground, color },
-      );
+    for (const color of colors) {
+      const actual = await page.evaluate((color) => {
+        const log = document.createElement("span");
+        log.className = `ansi-${color}-fg ansi-${color}-bg`;
+        const semantic = document.createElement("span");
+        semantic.style.color = `var(--color-ansi-${color})`;
+        semantic.style.backgroundColor = `var(--color-ansi-${color})`;
+        document.body.append(log, semantic);
+        const logStyle = getComputedStyle(log);
+        const semanticStyle = getComputedStyle(semantic);
+        const result = {
+          foreground: logStyle.color,
+          background: logStyle.backgroundColor,
+          expected: semanticStyle.color,
+        };
+        log.remove();
+        semantic.remove();
+        return result;
+      }, color);
       assert.equal(actual.foreground, actual.expected, color);
       assert.equal(actual.background, actual.expected, color);
     }
@@ -223,70 +216,93 @@ test("custom accent, font toggle, focus and hover are applied without activating
   const page = await browser.newPage();
   try {
     await mount(page, browserCSS(await compile({ accent: "blue", font: 1 })), "dark");
-    assert.equal(await style(page, "#create", "background-color"), rgb(palettes.mocha.blue));
+    assert.equal(await style(page, "#create", "--btn-brand"), palettes.mocha.blue);
     assert.match(await style(page, "body", "font-family"), /system-ui/);
     assert.equal(await style(page, "#neutral", "background-color"), rgb(palettes.mocha.base));
     await page.locator("#neutral").hover();
-    await page.waitForFunction(
-      () =>
-        getComputedStyle(document.querySelector("#neutral")!).backgroundColor === "rgb(49, 50, 68)",
-    );
     assert.equal(await style(page, "#neutral", "background-color"), "rgb(49, 50, 68)");
+    const resting = await style(page, "#create", "background-image");
     await page.locator("#create").hover();
-    await page.waitForFunction(
-      () =>
-        getComputedStyle(document.querySelector("#create")!).backgroundColor ===
-        "rgb(137, 180, 250)",
-    );
-    assert.equal(await style(page, "#create", "background-color"), rgb(palettes.mocha.blue));
+    assert.notEqual(await style(page, "#create", "background-image"), resting);
+    assert.equal(await style(page, "#create", "--btn-brand"), palettes.mocha.blue);
     await page.locator("#input").focus();
     assert.equal(await style(page, "#input", "outline-color"), rgb(palettes.mocha.blue));
     await mount(page, browserCSS(await compile({ font: 0 })), "light");
-    assert.match(await style(page, "body", "font-family"), /InterVariable/);
+    assert.match(await style(page, "body", "font-family"), /TimelessSans/);
   } finally {
     await page.close();
   }
 });
 
 for (const flavor of flavors) {
-  test(`${flavor}: primary actions and unfocused search use theme colors`, async () => {
+  test(`${flavor}: primary actions and search focus use theme colors`, async () => {
     const page = await browser.newPage();
     try {
       const css = browserCSS(await compile({ light: flavor, dark: flavor, accent: "blue" }));
       for (const siteTheme of ["light", "dark"] as const) {
-        await mount(page, css, siteTheme, "");
+        await mount(page, css, siteTheme);
         const p = palettes[flavor];
-        assert.equal(await style(page, "#join", "background-color"), rgb(p.blue));
+        assert.equal(await style(page, "#join", "--btn-brand"), p.blue);
         assert.equal(await style(page, "#join", "color"), rgb(p.base));
-        assert.equal(await style(page, "#join", "border-color"), rgb(p.blue));
+        const resting = await style(page, "#join", "background-image");
         await page.locator("#join").hover();
-        assert.equal(await style(page, "#join", "background-color"), rgb(p.blue));
+        assert.notEqual(await style(page, "#join", "background-image"), resting);
         assert.equal(await style(page, "#join", "color"), rgb(p.base));
         assert.equal(await style(page, "#success-status", "background-color"), rgb(p.green));
         assert.notEqual(await style(page, "#join-disabled", "color"), rgb(p.base));
         await mount(page, css, siteTheme);
-        assert.notEqual(
-          await style(page, "#star-action", "background-color"),
-          await style(page, "#star-count", "background-color"),
-        );
-        const searchColor = () => style(page, "#search-shell", "background-color");
-        const base = await page.evaluate((color) => {
-          const probe = document.createElement("div");
-          probe.style.backgroundColor = `color-mix(in srgb, ${color} 50%, transparent)`;
-          document.body.append(probe);
-          const result = getComputedStyle(probe).backgroundColor;
-          probe.remove();
-          return result;
-        }, p.base);
-        if (siteTheme === "dark") assert.equal(await searchColor(), base);
-        const unfocused = await searchColor();
+        const searchRing = () => style(page, "#search-shell", "box-shadow");
+        assert.equal(await style(page, "#search-shell", "background-color"), rgb(p.base));
+        const unfocused = await searchRing();
         await page.locator("#header-search").focus();
-        assert.notEqual(await searchColor(), unfocused);
+        assert.notEqual(await searchRing(), unfocused);
         await page.locator("#header-search").blur();
-        assert.equal(await searchColor(), unfocused);
+        assert.equal(await searchRing(), unfocused);
       }
     } finally {
       await page.close();
     }
   });
 }
+
+test("current controls retain disabled states, peer indicators, and field backgrounds", async () => {
+  const page = await browser.newPage();
+  try {
+    await mount(page, browserCSS(await compile()), "dark");
+    await page.locator("#mixed-check").evaluate((element) => {
+      (element as HTMLInputElement).indeterminate = true;
+    });
+    assert.equal(await style(page, "#destructive", "--btn-brand"), palettes.mocha.red);
+    assert.equal(await style(page, "#destructive", "color"), rgb(palettes.mocha.base));
+    assert.match(await style(page, "#destructive", "background-image"), /linear-gradient/);
+    for (const selector of ["#join-disabled", "#aria-disabled"]) {
+      assert.equal(await style(page, selector, "opacity"), "0.5");
+      assert.equal(await style(page, selector, "pointer-events"), "none");
+    }
+    assert.equal(await style(page, "#check-icon", "display"), "block");
+    assert.equal(await style(page, "#mixed-check-icon", "display"), "none");
+    assert.equal(await style(page, "#minus-icon", "display"), "block");
+    assert.equal(await style(page, "#radio-dot", "display"), "block");
+    assert.equal(await style(page, "#radio", "box-shadow"), "none");
+    assert.notEqual(
+      await style(page, "#disabled-check", "background-color"),
+      rgb(palettes.mocha.mauve),
+    );
+    for (const selector of ["#check", "#mixed-check", "#radio"]) {
+      assert.equal(await style(page, selector, "background-image"), "none");
+    }
+    for (const selector of ["#error-input", "#disabled-input"]) {
+      assert.equal(await style(page, selector, "background-color"), "rgba(0, 0, 0, 0)");
+    }
+    assert.notEqual(
+      await style(page, "#error-field", "background-color"),
+      rgb(palettes.mocha.base),
+    );
+    assert.notEqual(
+      await style(page, "#disabled-field", "background-color"),
+      rgb(palettes.mocha.base),
+    );
+  } finally {
+    await page.close();
+  }
+});

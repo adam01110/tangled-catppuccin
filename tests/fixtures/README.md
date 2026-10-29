@@ -1,19 +1,26 @@
 # Compatibility fixtures
 
-`palette.less` is the local library entrypoint used by compilation tests.
+The frontend fixtures follow Tangled core `next-dev` at
+[`7a507b7739c9aca91be292ed2a0c1e885e42da79`](https://tangled.org/tangled.org/core/tree/7a507b7739c9aca91be292ed2a0c1e885e42da79).
+They cover the deployed Svelte frontend, not the retired Go appview.
 
-- `std-v1.less`: Catppuccin’s versioned [standard
-  library](https://userstyles.catppuccin.com/lib/std/v1.less), captured for
-  offline compilation tests. The userstyle itself retains the remote import.
-- `svelte-tokens.json`: semantic color-token names from Tangled core `sv-fe` at
-  `b567c47c` (`web/src/app.css`) and `next-dev` at `6598d2fc`
-  (`web/src/theme.css`).
-- `svelte.css`: color declarations from that file, the inherited Pierre variable
-  interface from `web/src/pierre.css`, and representative semantic utility
-  rules. This tests the theme interface, not the complete Svelte application or
-  Pierre renderer.
+- `palette.less` loads `std-v1.less`, a local copy of the Catppuccin
+  [standard library](https://userstyles.catppuccin.com/lib/std/v1.less), for
+  offline compilation. The userstyle keeps its remote import.
+- `svelte-tokens.json` lists the 109 audited semantic color tokens from
+  [`web/src/theme.css`](https://tangled.org/tangled.org/core/raw/7a507b7739c9aca91be292ed2a0c1e885e42da79/web/src/theme.css).
+- `svelte.css` contains browser-compatible light color declarations from that
+  theme, the inherited variable bridge from
+  [`web/src/pierre.css`](https://tangled.org/tangled.org/core/raw/7a507b7739c9aca91be292ed2a0c1e885e42da79/web/src/pierre.css),
+  and representative semantic utilities. Tailwind directives and application
+  layout rules are omitted.
+- `controls.css` models the color and state rules from
+  [`web/src/lib/components/ui`](https://tangled.org/tangled.org/core/tree/7a507b7739c9aca91be292ed2a0c1e885e42da79/web/src/lib/components/ui)
+  (`Button.svelte`, `Checkbox.svelte`, `Radio.svelte`, and `inputField.ts`),
+  plus ANSI classes from
+  [`web/src/logs.css`](https://tangled.org/tangled.org/core/raw/7a507b7739c9aca91be292ed2a0c1e885e42da79/web/src/logs.css).
 
-Set `TANGLED_SVELTE_SOURCE` to a checkout’s `web/src/theme.css` (or `app.css` on
-sv-fe) to also check its live token inventory. Set `LEGACY_CSS_PATH` to compiled
-`input.css` from the current Go frontend to run browser assertions against its
-real cascade. Neither is required by the offline suite.
+These fixtures test the color interface and representative control states,
+not the full application, authenticated pages, or the Pierre renderer.
+Set `TANGLED_SVELTE_SOURCE` to a checkout’s `web/src/theme.css` to also check
+its live semantic-token inventory during compilation tests.
