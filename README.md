@@ -1,9 +1,24 @@
-# Tangled Catppuccin
+<!-- rumdl-disable MD023 MD033 MD041 -->
 
-A [Catppuccin](https://catppuccin.com) userstyle for
-[Tangled](https://tangled.org), adapted from [csw.im's original
-style](https://tangled.org/csw.im/tangled-catppuccin) for use in
-[nix-userstyles](https://github.com/adam01110/nix-userstyles).
+<div align="center">
+
+  # Tangled Catppuccin
+
+  A [Catppuccin](https://catppuccin.com) userstyle for
+  [Tangled](https://tangled.org), adapted from [csw.im's original
+  style](https://tangled.org/csw.im/tangled-catppuccin) for use in
+  [nix-userstyles](https://github.com/adam01110/nix-userstyles).
+
+  [![Repo Size](https://img.shields.io/github/repo-size/adam01110/tangled-catppuccin?style=flat-square&labelColor=504945&label=repo%20size&color=3c3836)](https://github.com/adam01110/tangled-catppuccin)
+  <br />
+  [![Nix](https://img.shields.io/badge/Nix-flakes-689d6a?style=flat-square&labelColor=504945&logo=nixos&logoColor=ebdbb2)](https://nixos.wiki/wiki/Flakes)
+  [![Catppuccin](https://img.shields.io/badge/Catppuccin-userstyle-b16286?style=flat-square&labelColor=504945)](https://github.com/catppuccin/userstyles)
+  [![Tangled](https://img.shields.io/badge/Tangled-Svelte%20appview-458588?style=flat-square&labelColor=504945&logo=tangled&logoColor=ebdbb2)](https://tangled.org)
+
+  [Install](#install) - [Settings](#settings) - [Development](#development) - [Compatibility](#compatibility)
+</div>
+
+<!-- rumdl-enable MD023 MD033 MD041 -->
 
 The style themes Tangled's Svelte frontend. It leaves the layout, images, label
 colors, and truecolor logs unchanged. Support for the retired Go appview has
