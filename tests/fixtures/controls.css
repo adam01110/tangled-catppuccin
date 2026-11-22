@@ -138,3 +138,27 @@
 .ansi-bright-white-bg {
 	background-color: var(--color-ansi-bright-white);
 }
+
+/* RevId.svelte and NetworkVouches.svelte, as compiled for tangled.org. */
+@layer utilities {
+  .text-indigo-600 { color: var(--color-indigo-600); }
+  .text-rose-600 { color: var(--color-rose-600); }
+  .bg-green-100 { background-color: var(--color-green-100); }
+  .text-green-800 { color: var(--color-green-800); }
+  .bg-red-100 { background-color: var(--color-red-100); }
+  .text-red-800 { color: var(--color-red-800); }
+  @media (prefers-color-scheme: dark) {
+    .dark\:text-indigo-400:where(:not([data-theme="light"], [data-theme="light"] *)) { color: var(--color-indigo-400); }
+    .dark\:text-rose-400:where(:not([data-theme="light"], [data-theme="light"] *)) { color: var(--color-rose-400); }
+    .dark\:bg-green-900:where(:not([data-theme="light"], [data-theme="light"] *)) { background-color: var(--color-green-900); }
+    .dark\:text-green-200:where(:not([data-theme="light"], [data-theme="light"] *)) { color: var(--color-green-200); }
+    .dark\:bg-red-900:where(:not([data-theme="light"], [data-theme="light"] *)) { background-color: var(--color-red-900); }
+    .dark\:text-red-200:where(:not([data-theme="light"], [data-theme="light"] *)) { color: var(--color-red-200); }
+  }
+  .dark\:text-indigo-400:where([data-theme="dark"], [data-theme="dark"] *) { color: var(--color-indigo-400); }
+  .dark\:text-rose-400:where([data-theme="dark"], [data-theme="dark"] *) { color: var(--color-rose-400); }
+  .dark\:bg-green-900:where([data-theme="dark"], [data-theme="dark"] *) { background-color: var(--color-green-900); }
+  .dark\:text-green-200:where([data-theme="dark"], [data-theme="dark"] *) { color: var(--color-green-200); }
+  .dark\:bg-red-900:where([data-theme="dark"], [data-theme="dark"] *) { background-color: var(--color-red-900); }
+  .dark\:text-red-200:where([data-theme="dark"], [data-theme="dark"] *) { color: var(--color-red-200); }
+}

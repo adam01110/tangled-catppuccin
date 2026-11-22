@@ -2,7 +2,7 @@
 @name tangled.org Catppuccin
 @description A Catppuccin theme for Tangled, the Atmosphere social coding platform.
 @namespace csw.im
-@version 1.2.0
+@version 1.3.0
 @author csw.im <cswimr@csw.im> (https://tangled.org/csw.im)
 @homepageURL https://tangled.org/csw.im/tangled-catppuccin
 @supportURL https://tangled.org/csw.im/tangled-catppuccin/issues
@@ -177,6 +177,26 @@
     --color-syntax-inserted: @green !important;
     --color-syntax-deleted: @red !important;
     --color-syntax-changed: @yellow !important;
+
+    // Raw Tailwind colors that bypass the semantic tokens. RevId colors unique
+    // change and commit ID prefixes like `jj log`: magenta and blue.
+    --color-indigo-400: @mauve !important;
+    --color-indigo-600: @mauve !important;
+    --color-rose-400: @blue !important;
+    --color-rose-600: @blue !important;
+    // NetworkVouches banners.
+    --color-green-100: fade(@green, 15%) !important;
+    --color-green-900: fade(@green, 15%) !important;
+    --color-green-200: @green !important;
+    --color-green-400: @green !important;
+    --color-green-600: @green !important;
+    --color-green-800: @green !important;
+    --color-red-100: fade(@red, 15%) !important;
+    --color-red-900: fade(@red, 15%) !important;
+    --color-red-200: @red !important;
+    --color-red-400: @red !important;
+    --color-red-600: @red !important;
+    --color-red-800: @red !important;
   }
 
   #font() when (@systemFont = 1) {

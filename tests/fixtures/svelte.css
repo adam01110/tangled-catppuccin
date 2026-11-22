@@ -1,3 +1,23 @@
+/* Tailwind palette colors from the deployed build that bypass semantic tokens. */
+:root {
+  --color-indigo-400: oklch(67.3% .182 276.935);
+  --color-indigo-600: oklch(51.1% .262 276.966);
+  --color-rose-400: oklch(71.2% .194 13.428);
+  --color-rose-600: oklch(58.6% .253 17.585);
+  --color-green-100: oklch(96.2% .044 156.743);
+  --color-green-200: oklch(92.5% .084 155.995);
+  --color-green-400: oklch(79.2% .209 151.711);
+  --color-green-600: oklch(62.7% .194 149.214);
+  --color-green-800: oklch(44.8% .119 151.328);
+  --color-green-900: oklch(39.3% .095 152.535);
+  --color-red-100: oklch(93.6% .032 17.717);
+  --color-red-200: oklch(88.5% .062 18.334);
+  --color-red-400: oklch(70.4% .191 22.216);
+  --color-red-600: oklch(57.7% .245 27.325);
+  --color-red-800: oklch(44.4% .177 26.899);
+  --color-red-900: oklch(39.6% .141 25.723);
+}
+
 :root {
   --color-background-default: #ffffff;
   --color-background-subtle: #fafafa;
@@ -8,7 +28,7 @@
   --color-background-highlight: #e0e7ff;
   --color-background-success-subtle: #dcfce7;
   --color-background-success-subtle-hover: #bbf7d0;
-  --color-background-success-emphasis: #16a34a;
+  --color-background-success-emphasis: #008931;
   --color-background-success-emphasis-hover: #15803d;
   --color-background-danger-subtle: #ffe4e6;
   --color-background-danger-subtle-hover: #fecdd3;
@@ -26,20 +46,20 @@
   --color-background-navigation-item: #ffffff;
   --color-foreground-default: #0a0a0a;
   --color-foreground-muted: #525252;
-  --color-foreground-subtle: #737373;
-  --color-foreground-placeholder: #a3a3a3;
+  --color-foreground-subtle: #6e6e6e;
+  --color-foreground-placeholder: #737373;
   --color-foreground-disabled: #d4d4d4;
   --color-foreground-on-emphasis: #ffffff;
   --color-foreground-inverted: #f5f5f5;
   --color-foreground-highlight: #3730a3;
-  --color-foreground-success: #16a34a;
+  --color-foreground-success: #00822a;
   --color-foreground-success-strong: #166534;
   --color-foreground-success-disabled: #16a34a80;
-  --color-foreground-danger: #e11d48;
+  --color-foreground-danger: #d4003e;
   --color-foreground-danger-strong: #9f1239;
   --color-foreground-danger-subtle: #fb7185;
   --color-foreground-danger-disabled: #fda4af;
-  --color-foreground-warning: #d97706;
+  --color-foreground-warning: #b85900;
   --color-foreground-warning-strong: #92400e;
   --color-foreground-warning-disabled: #fcd34d;
   --color-foreground-info: #4338ca;
@@ -47,19 +67,19 @@
   --color-foreground-link-default: #0a0a0a;
   --color-foreground-link-hover: #5750f1;
   --color-foreground-link-disabled: #a3a3a3;
-  --color-foreground-link-danger: #e11d48;
+  --color-foreground-link-danger: #d4003e;
   --color-foreground-link-danger-hover: #a63f3f;
-  --color-foreground-link-success: #16a34a;
+  --color-foreground-link-success: #00822a;
   --color-foreground-link-success-hover: #31814e;
-  --color-foreground-link-warning: #d97706;
-  --color-foreground-link-warning-hover: #f59e0b;
+  --color-foreground-link-warning: #b85900;
+  --color-foreground-link-warning-hover: #b05e00;
   --color-foreground-link-info: #5750f1;
   --color-foreground-link-info-hover: #6d67f5;
   --color-border-default: #e5e5e5;
   --color-border-subtle: #f0f0f0;
   --color-border-strong: #d4d4d4;
   --color-border-disabled: #e5e5e5;
-  --color-border-focus: #8b85f7;
+  --color-border-focus: #7c75e5;
   --color-border-focus-success: #22c55e;
   --color-border-focus-danger: #f43f5e;
   --color-border-success: #15803d;
@@ -121,32 +141,32 @@
   --color-alpha-dark-95: color-mix(in srgb, var(--color-foreground-default) 95%, transparent);
   --color-ansi-black: #6c6f85;
   --color-ansi-red: #d20f39;
-  --color-ansi-green: #40a02b;
-  --color-ansi-yellow: #df8e1d;
+  --color-ansi-green: #218500;
+  --color-ansi-yellow: #ad6000;
   --color-ansi-blue: #1e66f5;
   --color-ansi-magenta: #8839ef;
-  --color-ansi-cyan: #179299;
+  --color-ansi-cyan: #008087;
   --color-ansi-white: #4c4f69;
-  --color-ansi-bright-black: #8c8fa1;
-  --color-ansi-bright-red: #e64553;
-  --color-ansi-bright-green: #40a02b;
-  --color-ansi-bright-yellow: #e5c890;
-  --color-ansi-bright-blue: #209fb5;
-  --color-ansi-bright-magenta: #ea76cb;
-  --color-ansi-bright-cyan: #04a5e5;
-  --color-ansi-bright-white: #bcc0cc;
+  --color-ansi-bright-black: #6f7284;
+  --color-ansi-bright-red: #d63547;
+  --color-ansi-bright-green: #218500;
+  --color-ansi-bright-yellow: #8a703a;
+  --color-ansi-bright-blue: #007f95;
+  --color-ansi-bright-magenta: #b8489d;
+  --color-ansi-bright-cyan: #007ab7;
+  --color-ansi-bright-white: #70737e;
   --color-syntax-foreground: #4c4f69;
-  --color-syntax-comment: #7c7f93;
-  --color-syntax-string: #40a02b;
-  --color-syntax-keyword: #8839ef;
-  --color-syntax-function: #1e66f5;
-  --color-syntax-constant: #fe640b;
-  --color-syntax-parameter: #e64553;
-  --color-syntax-punctuation: #7c7f93;
-  --color-syntax-link: #1e66f5;
-  --color-syntax-inserted: #40a02b;
-  --color-syntax-deleted: #d20f39;
-  --color-syntax-changed: #df8e1d;
+  --color-syntax-comment: #56586b;
+  --color-syntax-string: #006900;
+  --color-syntax-keyword: #781fdb;
+  --color-syntax-function: #004bd9;
+  --color-syntax-constant: #b41100;
+  --color-syntax-parameter: #b6002d;
+  --color-syntax-punctuation: #56586b;
+  --color-syntax-link: #004bd9;
+  --color-syntax-inserted: #006900;
+  --color-syntax-deleted: #b60023;
+  --color-syntax-changed: #904400;
 }
 :root {
 	/* the "tangled" theme (pierre.ts) binds --diffs-bg/--diffs-fg to these and
@@ -179,7 +199,7 @@
 	--diffs-light-bg: var(--color-background-default);
 	--diffs-dark-bg: var(--color-background-default);
 	--diffs-bg-separator-override: var(--color-background-inset);
-	--diffs-fg-number-override: var(--color-foreground-placeholder);
+	--diffs-fg-number-override: var(--color-foreground-subtle);
 
 	--diffs-bg-gutter: var(--color-background-subtle);
 	--diffs-bg-gutter-wash: transparent;
@@ -189,7 +209,7 @@
 	--diffs-addition-color-override: var(--color-foreground-success);
 	--diffs-deletion-color-override: var(--color-foreground-danger);
 
-	--diffs-editor-selection-bg: color-mix(in srgb, Highlight 50%, transparent);
+	--diffs-editor-selection-bg: var(--color-background-info-subtle-hover);
 	--diffs-editor-line-highlight-border: transparent;
 }
 

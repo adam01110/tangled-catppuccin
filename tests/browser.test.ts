@@ -38,6 +38,10 @@ const fixture = `
 <div class="input-field error" id="error-field"><input id="error-input"></div>
 <div class="input-field disabled" id="disabled-field"><input id="disabled-input" disabled></div>
 <diffs-container id="diff"></diffs-container>
+<span class="font-[500] text-indigo-600 dark:text-indigo-400" id="change-id">kq</span>
+<span class="font-[500] text-rose-600 dark:text-rose-400" id="commit-id">88</span>
+<div class="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" id="vouch">Vouched</div>
+<div class="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200" id="denounce">Denounced</div>
 </main>`;
 const controls = await readFile(new URL("fixtures/controls.css", import.meta.url), "utf8");
 const upstream = await readFile(new URL("fixtures/svelte.css", import.meta.url), "utf8");
@@ -133,6 +137,14 @@ for (const flavor of flavors) {
           assert.equal(await style(page, "#truecolor-log", "color"), "rgb(12, 34, 56)");
           assert.equal(await style(page, "#sv-log", "color"), rgb(p.red));
           assert.equal(await style(page, "#diff span", "color"), rgb(p.blue));
+          assert.equal(await style(page, "#change-id", "color"), rgb(p.mauve));
+          assert.equal(await style(page, "#commit-id", "color"), rgb(p.blue));
+          assert.equal(await style(page, "#vouch", "color"), rgb(p.green));
+          assert.equal(await style(page, "#denounce", "color"), rgb(p.red));
+          assert.notEqual(
+            await style(page, "#vouch", "background-color"),
+            await style(page, "#denounce", "background-color"),
+          );
           assert.equal(
             await style(page, "html", "color-scheme"),
             flavor === "latte" ? "light" : "dark",
