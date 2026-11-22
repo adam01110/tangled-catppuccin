@@ -11,9 +11,9 @@
 
   [![Repo Size](https://img.shields.io/github/repo-size/adam01110/tangled-catppuccin?style=flat-square&labelColor=504945&label=repo%20size&color=3c3836)](https://github.com/adam01110/tangled-catppuccin)
   <br />
-  [![Nix](https://img.shields.io/badge/Nix-flakes-689d6a?style=flat-square&labelColor=504945&logo=nixos&logoColor=ebdbb2)](https://nixos.wiki/wiki/Flakes)
-  [![Catppuccin](https://img.shields.io/badge/Catppuccin-userstyle-b16286?style=flat-square&labelColor=504945)](https://github.com/catppuccin/userstyles)
-  [![Tangled](https://img.shields.io/badge/Tangled-Svelte%20appview-458588?style=flat-square&labelColor=504945&logo=tangled&logoColor=ebdbb2)](https://tangled.org)
+  [![Nix](https://img.shields.io/badge/Nix-flakes-8ec07c?style=flat-square&labelColor=504945&logo=nixos&logoColor=ebdbb2)](https://nixos.wiki/wiki/Flakes)
+  [![Catppuccin](https://img.shields.io/badge/Catppuccin-userstyle-d3869b?style=flat-square&labelColor=504945)](https://github.com/catppuccin/userstyles)
+  [![Tangled](https://img.shields.io/badge/Tangled-Svelte%20appview-83a598?style=flat-square&labelColor=504945&logo=tangled&logoColor=ebdbb2)](https://tangled.org)
 
   [Install](#install) - [Settings](#settings) - [Development](#development) - [Compatibility](#compatibility)
 </div>
